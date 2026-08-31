@@ -59,15 +59,18 @@ async function createClickUpTask(payload, env){
   const listId=env[envKey('CLICKUP_LIST', payload.request_type)];
   if(!listId) return null;
   const assignee=env[envKey('CLICKUP_ASSIGNEE', payload.request_type)];
-  const title=`[${payload.client_slug||'Client'}] ${payload.request_type.replaceAll('_',' ')} - ${payload.summary}`;
+  const requestLabel=String(payload.request_type||'request').replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
+  const title=`[${payload.client_slug||'Client'}] ${requestLabel} - ${payload.summary}`;
   const description=[
     `Client: ${payload.client_slug||''}`,
-    `Request type: ${payload.request_type||''}`,
-    payload.product_asin ? `ASIN / SKU: ${payload.product_asin}` : '',
+    `Request type: ${requestLabel}`,
+    payload.platform ? `Platform: ${payload.platform}` : '',
     payload.desired_date ? `Desired date: ${payload.desired_date}` : '',
     payload.requester_name ? `Requested by: ${payload.requester_name}` : '',
     payload.requester_email ? `Email: ${payload.requester_email}` : '',
     '',
+    'REQUEST DETAILS',
+    '---------------',
     payload.description||''
   ].filter(Boolean).join('\n');
 
