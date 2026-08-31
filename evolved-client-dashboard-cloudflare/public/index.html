@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Evolved Commerce | Client Dashboard</title>
+  <meta name="description" content="Evolved Commerce Amazon client performance dashboard">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <img class="brand-logo" src="/assets/evolved-commerce-logo.png" alt="Evolved Commerce">
+      <div class="header-actions">
+        <span class="portal-label">CLIENT PORTAL</span>
+        <a class="secondary-link" id="strategy-doc-link" href="#" target="_blank" rel="noopener noreferrer" hidden>View Strategy Doc</a>
+        <button class="orange-btn" id="request-work-btn">Request Work</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero-card">
+      <div class="hero-copy">
+        <span class="kicker">AMAZON PERFORMANCE</span>
+        <h1 id="client-name">Client Dashboard</h1>
+        <p id="hero-summary">Loading latest account data...</p>
+      </div>
+      <div class="hero-meta">
+        <span id="period-label">Loading...</span>
+        <strong id="updated-label">Loading latest data...</strong>
+      </div>
+      <div class="hero-orbit" aria-hidden="true"></div>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card featured">
+        <div class="kpi-top">
+          <div><span>Total Sales</span><strong id="kpi-sales">—</strong></div>
+          <div class="kpi-icon">$</div>
+        </div>
+        <div class="kpi-bottom"><small id="sales-goal">—</small><div class="mini-spark" id="spark-sales"></div></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-top">
+          <div><span>Ad Sales</span><strong id="kpi-ad-sales">—</strong></div>
+          <div class="kpi-icon">▥</div>
+        </div>
+        <div class="kpi-bottom"><small>Amazon-attributed sales</small><div class="mini-spark" id="spark-ad-sales"></div></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-top">
+          <div><span>Ad Spend</span><strong id="kpi-ad-spend">—</strong></div>
+          <div class="kpi-icon">▰</div>
+        </div>
+        <div class="kpi-bottom"><small>Month to date</small><div class="mini-spark" id="spark-spend"></div></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-top">
+          <div><span>ROAS</span><strong id="kpi-roas">—</strong></div>
+          <div class="kpi-icon">↗</div>
+        </div>
+        <div class="kpi-bottom"><small id="roas-target">—</small><div class="mini-spark" id="spark-roas"></div></div>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-top">
+          <div><span>TACOS</span><strong id="kpi-tacos">—</strong></div>
+          <div class="kpi-icon">◔</div>
+        </div>
+        <div class="kpi-bottom"><small id="tacos-target">—</small><div class="mini-spark" id="spark-tacos"></div></div>
+      </article>
+    </section>
+
+    <section class="metric-strip">
+      <div class="strip-item"><span>Projected Sales</span><strong id="strip-projected">—</strong><small id="strip-projected-note">—</small></div>
+      <div class="strip-item"><span>Sessions</span><strong id="strip-sessions">—</strong><small id="strip-sessions-note">—</small></div>
+      <div class="strip-item"><span>Conversion</span><strong id="strip-conversion">—</strong><small id="strip-conversion-note">—</small></div>
+      <div class="strip-item"><span>Inventory</span><strong id="strip-inventory">—</strong><small id="strip-inventory-note">—</small></div>
+    </section>
+
+    <section class="dark-analytics">
+      <div class="dark-heading">
+        <div>
+          <span class="kicker">TRAFFIC & CONVERSION</span>
+          <h2>Two levers that drive Amazon growth</h2>
+        </div>
+        <div class="period-switch" aria-label="Display period">
+          <button class="active" type="button">MTD</button>
+          <button type="button" disabled>3M</button>
+          <button type="button" disabled>6M</button>
+          <button type="button" disabled>YTD</button>
+        </div>
+      </div>
+
+      <div class="dark-chart-grid">
+        <article class="dark-chart-card">
+          <div class="chart-card-heading">
+            <div>
+              <span class="dark-eyebrow">TRAFFIC</span>
+              <h3>Sessions Trend</h3>
+            </div>
+            <div class="chart-stat">
+              <strong id="traffic-current">—</strong>
+              <span>Sessions</span>
+            </div>
+          </div>
+          <div class="premium-chart" id="traffic-chart"></div>
+          <div class="chart-footer">
+            <div><span>Projected</span><strong id="traffic-projected">—</strong></div>
+            <div><span>Target</span><strong id="traffic-target">—</strong></div>
+            <div><span>Latest week</span><strong id="traffic-latest">—</strong></div>
+          </div>
+        </article>
+
+        <article class="dark-chart-card">
+          <div class="chart-card-heading">
+            <div>
+              <span class="dark-eyebrow">CONVERSION</span>
+              <h3>Conversion Rate</h3>
+            </div>
+            <div class="chart-stat">
+              <strong id="conversion-current">—</strong>
+              <span>Current rate</span>
+            </div>
+          </div>
+          <div class="premium-chart" id="conversion-chart"></div>
+          <div class="chart-footer">
+            <div><span>Orders</span><strong id="conversion-orders">—</strong></div>
+            <div><span>Units</span><strong id="conversion-units">—</strong></div>
+            <div><span>Target</span><strong id="conversion-target">—</strong></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="lower-grid">
+      <article class="panel inventory-health">
+        <div class="panel-heading">
+          <div><span class="eyebrow">INVENTORY HEALTH</span><h3>Replenishment Snapshot</h3></div>
+          <button class="outline-btn" id="download-inventory">Download Refill List</button>
+        </div>
+
+        <div class="inventory-content">
+          <div class="donut-wrap">
+            <div class="inventory-donut" id="inventory-donut">
+              <div class="donut-center"><strong id="inventory-total">—</strong><span>Flagged</span></div>
+            </div>
+            <div class="donut-legend">
+              <div><i class="dot orange"></i><span>Out of stock</span><strong id="legend-oos">—</strong></div>
+              <div><i class="dot gold"></i><span>Order now</span><strong id="legend-order">—</strong></div>
+              <div><i class="dot slate"></i><span>Recommended units</span><strong id="legend-units">—</strong></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel refill-panel">
+        <div class="panel-heading">
+          <div><span class="eyebrow">TOP REFILL PRIORITIES</span><h3>Current Recommendations</h3></div>
+        </div>
+        <div class="refill-table-wrap">
+          <table>
+            <thead><tr><th>SKU / ASIN</th><th>Product</th><th>Status</th><th>Qty</th></tr></thead>
+            <tbody id="refill-table"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel strategy-work">
+        <div class="panel-heading">
+          <div><span class="eyebrow">STRATEGY & WORK</span><h3>Client Tools</h3></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">▤</div>
+          <div><strong>Full Strategy Doc</strong><span>Review the complete account strategy and supporting details.</span></div>
+          <a id="strategy-doc-link-secondary" class="tool-action" href="#" target="_blank" rel="noopener noreferrer">Open</a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">＋</div>
+          <div><strong>Request Work</strong><span>Submit design, copy, promotion, or new product work.</span></div>
+          <button class="tool-action button-link" id="request-work-secondary" type="button">Start</button>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">↓</div>
+          <div><strong>Inventory Refill List</strong><span>Download the current actionable SKU replenishment file.</span></div>
+          <button class="tool-action button-link" id="download-inventory-secondary" type="button">Download</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel compact-products">
+      <div class="panel-heading">
+        <div><span class="eyebrow">TOP PRODUCTS</span><h3>Month-to-Date Product Performance</h3></div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Product</th><th>Sales</th><th>Change</th><th>CVR</th></tr></thead>
+          <tbody id="product-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel definitions">
+      <details>
+        <summary>Metric definitions</summary>
+        <div class="definition-grid">
+          <div><strong>Total Sales</strong><p>All Amazon sales during the current reporting period.</p></div>
+          <div><strong>Ad Sales</strong><p>Sales Amazon attributes to advertising.</p></div>
+          <div><strong>Ad Spend</strong><p>Amount spent on Amazon advertising.</p></div>
+          <div><strong>ROAS</strong><p>Advertising sales generated for every $1 spent.</p></div>
+          <div><strong>TACOS</strong><p>Advertising spend divided by total sales.</p></div>
+          <div><strong>Conversion Rate</strong><p>The percentage of product-page sessions resulting in an order.</p></div>
+        </div>
+      </details>
+    </section>
+
+    <footer>
+      <span>Evolved Commerce</span>
+      <span>Evolve your Amazon business with us.</span>
+    </footer>
+  </main>
+
+  <dialog id="request-dialog" class="request-dialog">
+    <form id="request-form">
+      <div class="modal-header">
+        <div>
+          <span class="orange-kicker">CLIENT REQUEST</span>
+          <h2>Request Work</h2>
+          <p>Tell us what you need and we’ll route it to the right Evolved team member.</p>
+        </div>
+        <button type="button" class="icon-btn" id="close-dialog" aria-label="Close">×</button>
+      </div>
+
+      <div class="request-step">
+        <div class="request-step-label"><span>1</span> Request type</div>
+        <div class="request-type-grid" id="request-type-grid">
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="design" required>
+            <strong>Design</strong><small>Images, A+, storefront, creative</small>
+          </label>
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="copy" required>
+            <strong>Copy</strong><small>Listings, A+, keywords, content</small>
+          </label>
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="promotion" required>
+            <strong>Promotion</strong><small>Coupons, discounts, events</small>
+          </label>
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="new_product_upload" required>
+            <strong>New Product Upload</strong><small>Launch new catalog items</small>
+          </label>
+        </div>
+      </div>
+
+      <div id="request-core-fields" hidden>
+        <div class="request-step">
+          <div class="request-step-label"><span>2</span> Basics</div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="request-platform">Platform</label>
+              <select id="request-platform" name="platform" required>
+                <option value="">Choose platform...</option>
+                <option value="Amazon">Amazon</option>
+                <option value="Walmart">Walmart</option>
+                <option value="TikTok Shop">TikTok Shop</option>
+                <option value="Target Plus">Target Plus</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="desired-date">Desired completion date <span>(optional)</span></label>
+              <input id="desired-date" name="desired_date" type="date">
+            </div>
+          </div>
+          <div class="field">
+            <label for="request-summary">Request name</label>
+            <input id="request-summary" name="summary" maxlength="120" required placeholder="e.g. Launch new 20mm sailcloth colorways">
+          </div>
+          <div class="field">
+            <label for="request-products">Products / ASINs / SKUs <span>(if applicable)</span></label>
+            <textarea id="request-products" name="products" rows="2" placeholder="Paste ASINs, SKUs, product names, or a product family."></textarea>
+          </div>
+        </div>
+
+        <div class="request-step">
+          <div class="request-step-label"><span>3</span> Request details</div>
+          <div id="request-specific-fields"><div class="request-empty">Choose a request type and platform to see the information we need.</div></div>
+        </div>
+
+        <div class="request-step">
+          <div class="request-step-label"><span>4</span> Supporting information</div>
+          <div class="field">
+            <label for="source-link">Source files / Google Drive / product data link <span>(optional)</span></label>
+            <input id="source-link" name="source_link" type="url" placeholder="https://...">
+          </div>
+          <div class="field">
+            <label for="request-additional-context">Anything else we should know? <span>(optional)</span></label>
+            <textarea id="request-additional-context" name="additional_context" rows="3"></textarea>
+          </div>
+          <div class="field-grid">
+            <div class="field"><label for="requester-name">Your name</label><input id="requester-name" name="requester_name"></div>
+            <div class="field"><label for="requester-email">Your email</label><input id="requester-email" name="requester_email" type="email"></div>
+          </div>
+        </div>
+
+        <input type="hidden" name="client_slug" id="request-client-slug" value="anchorstrap">
+        <div class="modal-actions">
+          <span id="request-status"></span>
+          <button class="orange-btn" type="submit">Submit Request</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Evolved Commerce | Client Dashboard</title>
+  <meta name="description" content="Evolved Commerce Amazon client performance dashboard">
+  <style>
+:root{
+  --bg:#f4f6fa;
+  --panel:#ffffff;
+  --panel-soft:#f8f9fc;
+  --text:#152033;
+  --muted:#737c8c;
+  --line:#e7eaf0;
+  --navy:#13264b;
+  --blue:#2d5fd2;
+  --blue-soft:#edf3ff;
+  --amber:#a86a17;
+  --shadow:0 16px 42px rgba(22,36,62,.055);
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 50% -20%,rgba(45,95,210,.07),transparent 36rem),
+    var(--bg);
+}
+.shell{width:min(1220px,calc(100% - 44px));margin:0 auto;padding:34px 0 42px}
+.header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:26px}
+.brand{font-size:11px;font-weight:900;letter-spacing:.17em;color:var(--navy);margin-bottom:13px}
+.brand span{color:var(--blue)}
+h1{font-size:31px;line-height:1.05;margin:0 0 9px;letter-spacing:-.035em}
+.subline{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center}
+.separator{opacity:.5}
+.primary-btn{
+  border:1px solid rgba(255,255,255,.12);border-radius:11px;background:var(--navy);color:#fff;
+  font-size:13px;font-weight:760;padding:12px 17px;cursor:pointer;
+  box-shadow:0 8px 18px rgba(19,38,75,.14);transition:.15s ease
+}
+.primary-btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.eyebrow{font-size:10px;font-weight:850;letter-spacing:.14em;color:#8790a0}
+.overview-card{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:34px;align-items:center;
+  padding:27px 29px;margin-bottom:14px;background:linear-gradient(135deg,#fff,#fafbfe);
+  border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)
+}
+.overview-copy h2{font-size:22px;margin:5px 0 10px;letter-spacing:-.025em}
+.overview-copy p{font-size:13px;line-height:1.7;color:#596375;margin:0;max-width:720px}
+.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.comparison-item{
+  min-height:72px;border:1px solid var(--line);background:rgba(255,255,255,.82);
+  border-radius:13px;padding:12px 13px
+}
+.comparison-item span{display:block;font-size:10px;color:var(--muted);font-weight:700}
+.comparison-item strong{display:block;margin-top:7px;font-size:14px;letter-spacing:-.01em}
+.comparison-item small{display:block;margin-top:4px;font-size:9px;color:#929aaa}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.kpi-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px 17px 16px;
+  box-shadow:0 10px 26px rgba(22,36,62,.035)
+}
+.kpi-card>span{font-size:10px;color:var(--muted);font-weight:760;letter-spacing:.02em}
+.kpi-card strong{display:block;font-size:25px;margin:8px 0 5px;letter-spacing:-.04em}
+.kpi-card small{font-size:10px;color:#8a93a3}
+.chart-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:12px;margin-bottom:12px}
+.panel{
+  background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;
+  box-shadow:0 12px 30px rgba(22,36,62,.04)
+}
+.panel-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:15px}
+.panel-heading h3{margin:4px 0 0;font-size:16px;letter-spacing:-.01em}
+.panel-note{font-size:10px;color:#969eac;text-align:right}
+.chart-wrap{height:225px;width:100%}.chart-wrap svg{width:100%;height:100%;overflow:visible}
+.axis-label{fill:#9aa2b0;font-size:10px}.chart-value{fill:#596273;font-size:9px;font-weight:700}
+.signal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.signal-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:18px 19px;
+  box-shadow:0 10px 24px rgba(22,36,62,.035)
+}
+.signal-list{margin-top:12px}.signal-row{display:flex;justify-content:space-between;gap:18px;padding:10px 0;border-top:1px solid #eef0f4}
+.signal-row:first-child{border-top:0;padding-top:1px}
+.signal-row span{font-size:11px;color:#707989}.signal-row strong{font-size:12px;text-align:right}
+.two-col{display:grid;grid-template-columns:1.35fr .85fr;gap:12px;margin-bottom:12px}
+.table-scroll{overflow:auto}table{border-collapse:collapse;width:100%}
+th{text-align:left;font-size:9px;letter-spacing:.1em;color:#929aaa;text-transform:uppercase;padding:8px;border-bottom:1px solid var(--line)}
+td{font-size:11px;padding:11px 8px;border-bottom:1px solid #eff1f5;vertical-align:middle}
+td:not(:first-child),th:not(:first-child){white-space:nowrap}
+.product-name{font-weight:700}.asin{display:block;color:#9aa2ae;font-size:9px;margin-top:4px}
+.change{font-weight:750;color:#44516a}
+.metric-chip{display:inline-block;padding:6px 9px;border-radius:999px;font-size:10px;font-weight:800;background:var(--panel-soft);color:#5e6879;border:1px solid var(--line)}
+.inventory-summary{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:5px 0 14px}
+.inventory-summary div{background:var(--panel-soft);border:1px solid #eef0f4;border-radius:13px;padding:13px}
+.inventory-summary strong{display:block;font-size:22px}.inventory-summary span{font-size:10px;color:var(--muted)}
+.inventory-list{display:flex;flex-direction:column;gap:0}
+.inventory-row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #eef1f5;padding:10px 0}
+.inventory-row:first-child{border-top:0;padding-top:0}
+.inventory-row strong{font-size:10px}.inventory-row span{display:block;color:#949ca9;font-size:9px;margin-top:3px}
+.inventory-row b{font-size:10px;color:#596475;white-space:nowrap}
+.definitions{padding:0}.definitions details{padding:18px 20px}.definitions summary{cursor:pointer;font-size:12px;font-weight:800}
+.definition-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+.definition-grid strong{font-size:11px}.definition-grid p{font-size:10px;line-height:1.55;color:var(--muted);margin:4px 0 0}
+footer{display:flex;justify-content:space-between;color:#a0a7b3;font-size:9px;padding:18px 3px 0}
+dialog{width:min(640px,calc(100% - 32px));border:0;border-radius:18px;padding:0;box-shadow:0 30px 80px rgba(13,25,51,.25)}
+dialog::backdrop{background:rgba(13,25,51,.45);backdrop-filter:blur(3px)}
+#request-form{padding:23px}.modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.modal-header h2{margin:4px 0 0}.icon-btn{border:0;background:#f0f2f6;width:32px;height:32px;border-radius:9px;font-size:20px;cursor:pointer}
+.field{margin:13px 0}.field label{display:block;font-size:11px;font-weight:800;color:#4f5868;margin-bottom:6px}.field label span{font-weight:500;color:var(--muted)}
+input,select,textarea{width:100%;border:1px solid #dfe4ec;border-radius:9px;padding:10px 11px;font:inherit;font-size:13px;color:var(--text);background:#fff;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#91a9e6;box-shadow:0 0 0 3px #eef3ff}
+.two-field{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px}
+#request-status{font-size:11px;color:var(--muted)}
+@media(max-width:900px){
+  .overview-card,.chart-grid,.two-col{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .signal-grid{grid-template-columns:1fr}
+  .definition-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .shell{width:min(100% - 24px,1220px);padding-top:22px}
+  .header{align-items:stretch}.header .primary-btn{align-self:flex-start}
+  .overview-card{padding:20px}.comparison-grid{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr}.kpi-card strong{font-size:21px}
+  .definition-grid,.two-field{grid-template-columns:1fr}.subline{align-items:flex-start;flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+  <main class="shell">
+    <header class="header">
+      <div>
+        <div class="brand">EVOLVED <span>COMMERCE</span></div>
+        <h1 id="client-name">Client Dashboard</h1>
+        <div class="subline">
+          <span id="period-label">Loading...</span>
+          <span class="separator">/</span>
+          <span id="updated-label">Loading latest data...</span>
+        </div>
+      </div>
+      <button class="primary-btn" id="request-work-btn">Request Work</button>
+    </header>
+
+    <section class="overview-card">
+      <div class="overview-copy">
+        <span class="eyebrow">PERFORMANCE SNAPSHOT</span>
+        <h2 id="snapshot-title">Current account performance</h2>
+        <p id="snapshot-detail">Loading current data...</p>
+      </div>
+      <div class="comparison-grid" id="comparison-grid"></div>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card">
+        <span>Total Sales</span>
+        <strong id="kpi-sales">—</strong>
+        <small id="sales-goal">—</small>
+      </article>
+      <article class="kpi-card">
+        <span>Ad Sales</span>
+        <strong id="kpi-ad-sales">—</strong>
+        <small>Amazon-attributed sales</small>
+      </article>
+      <article class="kpi-card">
+        <span>Ad Spend</span>
+        <strong id="kpi-ad-spend">—</strong>
+        <small>Month to date</small>
+      </article>
+      <article class="kpi-card">
+        <span>ROAS</span>
+        <strong id="kpi-roas">—</strong>
+        <small id="roas-target">—</small>
+      </article>
+      <article class="kpi-card">
+        <span>TACOS</span>
+        <strong id="kpi-tacos">—</strong>
+        <small id="tacos-target">—</small>
+      </article>
+    </section>
+
+    <section class="chart-grid">
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">SALES</span>
+            <h3>Total Sales Trend</h3>
+          </div>
+          <span class="panel-note">Completed months + current projection</span>
+        </div>
+        <div class="chart-wrap" id="sales-chart"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">ADVERTISING</span>
+            <h3>TACOS Trend</h3>
+          </div>
+          <span class="panel-note" id="tacos-chart-target"></span>
+        </div>
+        <div class="chart-wrap" id="tacos-chart"></div>
+      </article>
+    </section>
+
+    <section class="signal-grid">
+      <article class="signal-card">
+        <span class="eyebrow">SALES & TRAFFIC</span>
+        <div class="signal-list" id="sales-signals"></div>
+      </article>
+      <article class="signal-card">
+        <span class="eyebrow">ADVERTISING</span>
+        <div class="signal-list" id="ad-signals"></div>
+      </article>
+      <article class="signal-card">
+        <span class="eyebrow">OPERATIONS</span>
+        <div class="signal-list" id="ops-signals"></div>
+      </article>
+    </section>
+
+    <section class="two-col">
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">PRODUCTS</span>
+            <h3>Top Products</h3>
+          </div>
+          <span class="panel-note">Month to date</span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Product</th><th>Sales</th><th>Change</th><th>CVR</th></tr></thead>
+            <tbody id="product-table"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">INVENTORY</span>
+            <h3>Availability Snapshot</h3>
+          </div>
+          <span class="metric-chip" id="inventory-count">—</span>
+        </div>
+        <div class="inventory-summary">
+          <div><strong id="out-of-stock">—</strong><span>Out of stock</span></div>
+          <div><strong id="order-now">—</strong><span>Reorder flags</span></div>
+        </div>
+        <div class="inventory-list" id="inventory-list"></div>
+      </article>
+    </section>
+
+    <section class="panel definitions">
+      <details>
+        <summary>Metric definitions</summary>
+        <div class="definition-grid">
+          <div><strong>Total Sales</strong><p>All Amazon sales during the current reporting period.</p></div>
+          <div><strong>Ad Sales</strong><p>Sales Amazon attributes to advertising.</p></div>
+          <div><strong>Ad Spend</strong><p>Amount spent on Amazon advertising.</p></div>
+          <div><strong>ROAS</strong><p>Advertising sales generated for every $1 spent.</p></div>
+          <div><strong>TACOS</strong><p>Advertising spend divided by total sales.</p></div>
+          <div><strong>Conversion Rate</strong><p>The percentage of product-page sessions resulting in an order.</p></div>
+        </div>
+      </details>
+    </section>
+
+    <footer>
+      <span>Evolved Commerce</span>
+      <span>Amazon Performance Dashboard</span>
+    </footer>
+  </main>
+
+  <dialog id="request-dialog">
+    <form id="request-form" method="dialog">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">CLIENT REQUEST</span>
+          <h2>Request Work</h2>
+        </div>
+        <button type="button" class="icon-btn" id="close-dialog">×</button>
+      </div>
+
+      <div class="field">
+        <label for="request-type">Request type</label>
+        <select id="request-type" name="request_type" required>
+          <option value="">Choose one...</option>
+          <option value="design">Design</option>
+          <option value="copy">Copy</option>
+          <option value="promotion">Promotion</option>
+          <option value="new_product_upload">New Product Upload</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="request-summary">What do you need?</label>
+        <input id="request-summary" name="summary" maxlength="120" required placeholder="e.g. New main image for our sailcloth strap">
+      </div>
+      <div class="field">
+        <label for="request-description">Details</label>
+        <textarea id="request-description" name="description" rows="5" required placeholder="Include any details, goals, or context that will help the team."></textarea>
+      </div>
+      <div class="field two-field">
+        <div>
+          <label for="request-asin">ASIN / SKU <span>(optional)</span></label>
+          <input id="request-asin" name="product_asin">
+        </div>
+        <div>
+          <label for="desired-date">Desired date <span>(optional)</span></label>
+          <input id="desired-date" name="desired_date" type="date">
+        </div>
+      </div>
+      <div class="field two-field">
+        <div>
+          <label for="requester-name">Your name</label>
+          <input id="requester-name" name="requester_name">
+        </div>
+        <div>
+          <label for="requester-email">Your email</label>
+          <input id="requester-email" name="requester_email" type="email">
+        </div>
+      </div>
+      <input type="hidden" name="client_slug" id="request-client-slug" value="anchorstrap">
+      <div class="modal-actions">
+        <span id="request-status"></span>
+        <button class="primary-btn" type="submit">Submit Request</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>window.__PREVIEW_DATA__={"schema_version": "1.0.0", "client": {"name": "Anchor Strap", "slug": "anchorstrap", "host": "anchorstrap.evolvedcommerce.com"}, "generated_at": "2026-08-31T15:19:26.485Z", "generated_at_local": "2026-08-31 09:19:26", "timezone": "America/Denver", "period_label": "August 2026", "data_through": {"sales": "2026-08-29", "ads": "2026-08-29"}, "kpis": {"total_sales": 31620.08, "projected_sales": 33800.78, "sessions": 28534, "orders": 887, "units": 889, "ad_impressions": 1135897, "ad_clicks": 11307, "ad_spend": 8973.48, "ad_sales": 21564.03, "ad_orders": 602, "roas": 2.4030844221, "tacos": 0.2837905533, "ctr": 0.0099542476, "ad_cvr": 0.0532413549, "cpc": 0.7936216503, "projected_sessions": 30501.86, "projected_spend": 9592.34, "conversion_rate": 0.0310857223}, "goals": {"monthly_sales": {"name": "Monthly Sales", "active": true, "target": 60000, "current": 31620.08, "projected": 33800.78, "status": "Off Track"}, "monthly_sessions": {"name": "Monthly Sessions", "active": true, "target": 30000, "current": 28534, "projected": 30501.86, "status": "On Track"}, "tacos": {"name": "TACOS", "active": true, "target": 0.4, "current": 0.2837905533, "projected": 0.2837905533, "status": "Achieved"}, "roas": {"name": "ROAS", "active": true, "target": 2.0, "current": 2.4030844221, "projected": 2.4030844221, "status": "Achieved"}, "conversion_rate": {"name": "Conversion Rate", "active": true, "target": 0.05, "current": 0.0310482054, "projected": 0.0310482054, "status": "Off Track"}}, "health": {"overall": "NEEDS_ATTENTION", "growth": "ACTION_NEEDED", "advertising": "HEALTHY", "conversion": "ACTION_NEEDED", "inventory": "ACTION_NEEDED", "data_freshness": "HEALTHY", "data_age_days": 2, "action_needed_count": 3, "watch_count": 0}, "summary": {"headline": "Account needs attention", "detail": "Advertising is healthy at 2.40x ROAS and 28.4% TACOS against the 2.00x ROAS target and 40.0% TACOS target. Projected sales are $33,801 against a $60,000 monthly goal. Conversion is 3.1% versus a 5.0% target. 28 products are currently flagged for inventory risk."}, "wins": ["Advertising efficiency is beating its current guardrails at 2.40x ROAS and 28.4% TACOS.", "Advertising has generated $21,564 in attributed sales on $8,973 in spend this month."], "focus": ["Close the projected monthly sales gap of $26,199 while protecting efficiency.", "Improve conversion from 3.1% toward the 5.0% target."], "watching": ["28 products are currently flagged for inventory risk, including 15 out of stock.", "Projected monthly sales are $33,801 versus the $60,000 target."], "top_products": [{"product": "Anchor Strap Co | 20mm Classic Sailcloth Watch Strap | Jet Black | Marine-Grade Outer + Caoutchouc Rubber Lining | Water-Resistant", "asin": "B0FMKRK1KN", "sales": 2399.52, "prior_sales": 2399.52, "sales_change": 0.0, "units": 49, "sessions": 1231, "conversion_rate": 0.039805}, {"product": "Anchor Strap Co | 20mm Classic Sailcloth Watch Strap | Black | Marine-Grade Outer + Caoutchouc Rubber Lining | Water-Resistant", "asin": "B0FMKQW3XG", "sales": 1749.65, "prior_sales": 1599.68, "sales_change": 0.09375, "units": 35, "sessions": 1429, "conversion_rate": 0.0244927}, {"product": "Anchor Strap Co | 20mm Ribbed Nylon Watch Strap | Navy Bond | Ridge Weave Band", "asin": "B0FNKFVY6V", "sales": 1653.0, "prior_sales": 1566.0, "sales_change": 0.0555556, "units": 57, "sessions": 1500, "conversion_rate": 0.038}, {"product": "Anchor Strap Co | Anchorflex Seahunter Watch Strap | Black | 20mm FKM Rubber Dive Band", "asin": "B0FW6PSQ7K", "sales": 1349.73, "prior_sales": 1249.75, "sales_change": 0.08, "units": 27, "sessions": 543, "conversion_rate": 0.0497238}, {"product": "Anchor Strap Co | 20mm Ribbed Nylon Watch Strap | NATO Style | Bond", "asin": "B0FNKFDKW1", "sales": 1131.0, "prior_sales": 1044.0, "sales_change": 0.0833333, "units": 39, "sessions": 1251, "conversion_rate": 0.0311751}], "monthly_trend": [{"year": 2026, "month": "February", "total_sales": 15061.0, "ad_spend": 1872.07, "ad_sales": 8021.0, "roas": 4.28456, "tacos": 0.124299}, {"year": 2026, "month": "March", "total_sales": 41951.04, "ad_spend": 17155.09, "ad_sales": 33816.04, "roas": 1.9712, "tacos": 0.408931}, {"year": 2026, "month": "April", "total_sales": 47148.0, "ad_spend": 14473.53, "ad_sales": 35963.0, "roas": 2.48474, "tacos": 0.306981}, {"year": 2026, "month": "May", "total_sales": 44710.21, "ad_spend": 21136.17, "ad_sales": 33277.4, "roas": 1.57443, "tacos": 0.472737}, {"year": 2026, "month": "June", "total_sales": 45813.28, "ad_spend": 15677.97, "ad_sales": 32132.57, "roas": 2.04954, "tacos": 0.342215}, {"year": 2026, "month": "July", "total_sales": 36103.4, "ad_spend": 19296.76, "ad_sales": 26485.68, "roas": 1.37255, "tacos": 0.534486}], "inventory": {"risk_products": 28, "out_of_stock": 15, "order_now": 13, "critical_products": [{"status": "OUT OF STOCK", "asin": "B0FMKRF3ZG", "product": "22mm Classic Sailcloth Watch Strap - Navy", "recommended_units": 55}, {"status": "OUT OF STOCK", "asin": "B0FNKCDNLW", "product": "20mm Hybrid Nylon Watch Strap - Gray", "recommended_units": 50}, {"status": "OUT OF STOCK", "asin": "B0FNKHFQMS", "product": "20mm Hybrid Nylon Watch Strap - Desert", "recommended_units": 38}, {"status": "OUT OF STOCK", "asin": "B0FNKFL7C9", "product": "22mm Hybrid Nylon Watch Strap - Carbon", "recommended_units": 23}, {"status": "OUT OF STOCK", "asin": "B0FMKSRV3G", "product": "20mm Classic Sailcloth Watch Strap - Gray", "recommended_units": 20}]}, "open_work": {"open_count": 144, "critical_count": 15, "high_count": 102}};</script><script>
+const $ = (id) => document.getElementById(id);
+let dashboard = null;
+
+const fmtMoney = (n, compact=false) =>
+  new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0,notation:compact?'compact':'standard'}).format(Number(n||0));
+const fmtPct = (n, digits=1) => `${(Number(n||0)*100).toFixed(digits)}%`;
+const fmtNum = n => new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(Number(n||0));
+const fmtRoas = n => `${Number(n||0).toFixed(2)}x`;
+
+function slugFromHost(){
+  const host = location.hostname.toLowerCase();
+  const parts = host.split('.');
+  if(host.endsWith('.evolvedcommerce.com') && parts.length > 2) return parts[0];
+  const q = new URLSearchParams(location.search).get('client');
+  return q || 'anchorstrap';
+}
+
+async function loadDashboard(){ if(window.__PREVIEW_DATA__){dashboard=window.__PREVIEW_DATA__;render(dashboard);return;}
+  const slug = slugFromHost();
+  let data = null;
+  try{
+    const r = await fetch(`/api/dashboard?slug=${encodeURIComponent(slug)}`, {headers:{'Accept':'application/json'}});
+    if(r.ok) data = await r.json();
+  }catch(e){}
+  if(!data){
+    const fallback = await fetch(`/data/${slug}.json`);
+    if(!fallback.ok) throw new Error(`No dashboard data found for ${slug}`);
+    data = await fallback.json();
+    data.__seed = true;
+  }
+  dashboard = data;
+  render(data);
+}
+
+function render(d){
+  $('client-name').textContent = d.client?.name || 'Client Dashboard';
+  $('period-label').textContent = d.period_label || '';
+  const through = d.data_through?.sales
+    ? `Data through ${new Date(d.data_through.sales+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}`
+    : '';
+  $('updated-label').textContent = d.__seed ? `${through} · Prototype data` : through;
+
+  $('snapshot-title').textContent = `${d.period_label || 'Current'} performance snapshot`;
+  $('snapshot-detail').textContent = neutralSummary(d);
+  renderComparisons(d);
+
+  $('kpi-sales').textContent = fmtMoney(d.kpis?.total_sales);
+  $('kpi-ad-sales').textContent = fmtMoney(d.kpis?.ad_sales);
+  $('kpi-ad-spend').textContent = fmtMoney(d.kpis?.ad_spend);
+  $('kpi-roas').textContent = fmtRoas(d.kpis?.roas);
+  $('kpi-tacos').textContent = fmtPct(d.kpis?.tacos);
+  $('sales-goal').textContent = d.goals?.monthly_sales?.target
+    ? `Projected ${fmtMoney(d.kpis?.projected_sales)} · Goal ${fmtMoney(d.goals.monthly_sales.target)}`
+    : 'Month to date';
+  $('roas-target').textContent = d.goals?.roas?.target ? `Target ${fmtRoas(d.goals.roas.target)}` : '';
+  $('tacos-target').textContent = d.goals?.tacos?.target ? `Target ${fmtPct(d.goals.tacos.target)}` : '';
+  $('tacos-chart-target').textContent = d.goals?.tacos?.target ? `Reference target ${fmtPct(d.goals.tacos.target)}` : '';
+
+  renderSignals(d);
+
+  $('product-table').innerHTML = (d.top_products||[]).map(p => {
+    const trend = Number(p.sales_change||0);
+    const sign = trend > 0 ? '+' : '';
+    return `<tr>
+      <td><span class="product-name">${escapeHtml(prettyName(p.product))}</span><span class="asin">${escapeHtml(p.asin||'')}</span></td>
+      <td>${fmtMoney(p.sales)}</td>
+      <td class="change">${sign}${(trend*100).toFixed(1)}%</td>
+      <td>${fmtPct(p.conversion_rate)}</td>
+    </tr>`;
+  }).join('');
+
+  const inv = d.inventory || {};
+  $('inventory-count').textContent = `${fmtNum(inv.risk_products)} flagged`;
+  $('out-of-stock').textContent = fmtNum(inv.out_of_stock);
+  $('order-now').textContent = fmtNum(inv.order_now);
+  $('inventory-list').innerHTML = (inv.critical_products||[]).slice(0,5).map(x =>
+    `<div class="inventory-row"><div><strong>${escapeHtml(prettyName(x.product))}</strong><span>${escapeHtml(x.asin||'')}</span></div><b>${fmtNum(x.recommended_units)} units</b></div>`
+  ).join('');
+
+  drawSalesChart(d);
+  drawTacosChart(d);
+  $('request-client-slug').value = d.client?.slug || 'anchorstrap';
+}
+
+function neutralSummary(d){
+  const k = d.kpis || {};
+  const g = d.goals || {};
+  const bits = [];
+  bits.push(`Month-to-date sales are ${fmtMoney(k.total_sales)} with ${fmtMoney(k.projected_sales)} projected for the month.`);
+  if(g.monthly_sales?.target) bits.push(`The current monthly sales target is ${fmtMoney(g.monthly_sales.target)}.`);
+  bits.push(`Advertising has generated ${fmtMoney(k.ad_sales)} in attributed sales on ${fmtMoney(k.ad_spend)} in spend, with ${fmtRoas(k.roas)} ROAS and ${fmtPct(k.tacos)} TACOS.`);
+  if(k.conversion_rate !== undefined) bits.push(`Conversion is ${fmtPct(k.conversion_rate)} across ${fmtNum(k.sessions)} sessions.`);
+  return bits.join(' ');
+}
+
+function renderComparisons(d){
+  const k=d.kpis||{}, g=d.goals||{}, inv=d.inventory||{};
+  const salesTarget=Number(g.monthly_sales?.target||0);
+  const projected=Number(k.projected_sales||0);
+  const attainment=salesTarget ? projected/salesTarget : null;
+  const items=[
+    ['Projected sales', fmtMoney(projected), salesTarget ? `${fmtPct(attainment,0)} of ${fmtMoney(salesTarget)} target` : 'Current projection'],
+    ['ROAS', fmtRoas(k.roas), g.roas?.target ? `Target ${fmtRoas(g.roas.target)}` : 'Current month'],
+    ['Conversion', fmtPct(k.conversion_rate), g.conversion_rate?.target ? `Target ${fmtPct(g.conversion_rate.target)}` : 'Current month'],
+    ['Inventory', `${fmtNum(inv.risk_products)} flagged`, `${fmtNum(inv.out_of_stock)} out of stock`]
+  ];
+  $('comparison-grid').innerHTML=items.map(([label,value,note]) =>
+    `<div class="comparison-item"><span>${label}</span><strong>${value}</strong><small>${note}</small></div>`
+  ).join('');
+}
+
+function renderSignals(d){
+  const k=d.kpis||{}, g=d.goals||{}, inv=d.inventory||{};
+  renderSignalList('sales-signals',[
+    ['Month-to-date sales',fmtMoney(k.total_sales)],
+    ['Projected month sales',fmtMoney(k.projected_sales)],
+    ['Sessions',fmtNum(k.sessions)],
+    ['Conversion rate',fmtPct(k.conversion_rate)]
+  ]);
+  renderSignalList('ad-signals',[
+    ['Attributed ad sales',fmtMoney(k.ad_sales)],
+    ['Ad spend',fmtMoney(k.ad_spend)],
+    ['ROAS',fmtRoas(k.roas)],
+    ['TACOS',fmtPct(k.tacos)]
+  ]);
+  renderSignalList('ops-signals',[
+    ['Inventory flags',fmtNum(inv.risk_products)],
+    ['Out of stock',fmtNum(inv.out_of_stock)],
+    ['Reorder flags',fmtNum(inv.order_now)],
+    ['Data age',`${fmtNum(d.health?.data_age_days||0)} days`]
+  ]);
+}
+
+function renderSignalList(id, rows){
+  $(id).innerHTML=rows.map(([label,value]) =>
+    `<div class="signal-row"><span>${label}</span><strong>${value}</strong></div>`
+  ).join('');
+}
+
+function prettyName(v=''){
+  let s = String(v).replace('Anchor Strap Co | ','').replaceAll(' | ',' · ');
+  if(s.length > 72) s = s.slice(0,69).trim()+'…';
+  return s;
+}
+function escapeHtml(s=''){
+  return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+}
+
+function drawSalesChart(d){
+  const points = [...(d.monthly_trend||[])].map(x=>({label:x.month.slice(0,3),value:x.total_sales}));
+  points.push({label:'Aug*',value:d.kpis?.projected_sales||0});
+  drawLine('sales-chart', points, {value:v=>fmtMoney(v,true), stroke:'#2d5fd2', fill:'#edf3ff'});
+}
+
+function drawTacosChart(d){
+  const points = [...(d.monthly_trend||[])].map(x=>({label:x.month.slice(0,3),value:x.tacos}));
+  points.push({label:'Aug',value:d.kpis?.tacos||0});
+  drawLine('tacos-chart', points, {value:v=>fmtPct(v,0), stroke:'#596b94', fill:'#f1f3f8', target:d.goals?.tacos?.target});
+}
+
+function drawLine(id, points, opts){
+  const el=$(id), w=720,h=220,pad={l:48,r:18,t:20,b:34};
+  if(!points.length){el.innerHTML='';return}
+  const vals=points.map(p=>Number(p.value||0));
+  let min=Math.min(...vals,opts.target??Infinity),max=Math.max(...vals,opts.target??-Infinity);
+  if(min===max){min*=.8;max*=1.2}
+  const spread=max-min; min=Math.max(0,min-spread*.18); max=max+spread*.18;
+  const x=i=>pad.l+(i*(w-pad.l-pad.r)/Math.max(1,points.length-1));
+  const y=v=>pad.t+(max-v)*(h-pad.t-pad.b)/(max-min);
+  const coords=points.map((p,i)=>[x(i),y(p.value)]);
+  const line=coords.map((c,i)=>(i?'L':'M')+c[0].toFixed(1)+','+c[1].toFixed(1)).join(' ');
+  const area=`M${coords[0][0]},${h-pad.b} `+coords.map(c=>`L${c[0]},${c[1]}`).join(' ')+` L${coords.at(-1)[0]},${h-pad.b} Z`;
+  const grid=[0,.5,1].map(t=>{
+    const val=max-(max-min)*t,yy=pad.t+(h-pad.t-pad.b)*t;
+    return `<line x1="${pad.l}" y1="${yy}" x2="${w-pad.r}" y2="${yy}" stroke="#edf0f5"/><text x="4" y="${yy+4}" class="axis-label">${opts.value(val)}</text>`;
+  }).join('');
+  const labels=points.map((p,i)=>`<text x="${x(i)}" y="${h-10}" text-anchor="middle" class="axis-label">${p.label}</text>`).join('');
+  const dots=coords.map((c,i)=>`<circle cx="${c[0]}" cy="${c[1]}" r="3.3" fill="#fff" stroke="${opts.stroke}" stroke-width="2"/><text x="${c[0]}" y="${c[1]-10}" text-anchor="middle" class="chart-value">${opts.value(points[i].value)}</text>`).join('');
+  let target='';
+  if(opts.target !== undefined && opts.target !== null){
+    const ty=y(opts.target);
+    target=`<line x1="${pad.l}" y1="${ty}" x2="${w-pad.r}" y2="${ty}" stroke="#b18a50" stroke-width="1.2" stroke-dasharray="5 5"/>`;
+  }
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">${grid}${target}<path d="${area}" fill="${opts.fill}" opacity=".72"/><path d="${line}" fill="none" stroke="${opts.stroke}" stroke-width="2.3" vector-effect="non-scaling-stroke"/>${dots}${labels}</svg>`;
+}
+
+const dialog=$('request-dialog');
+$('request-work-btn').addEventListener('click',()=>dialog.showModal());
+$('close-dialog').addEventListener('click',()=>dialog.close());
+$('request-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const status=$('request-status'), form=e.currentTarget;
+  status.textContent='Submitting…';
+  const payload=Object.fromEntries(new FormData(form).entries());
+  try{
+    const r=await fetch('/api/work-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const result=await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(result.error||'Request service is not configured yet.');
+    status.textContent=result.clickup_task_id?'Submitted to the Evolved team ✓':'Request saved ✓';
+    setTimeout(()=>{dialog.close();form.reset();status.textContent='';},1300);
+  }catch(err){
+    const local={...payload,created_at:new Date().toISOString()};
+    const existing=JSON.parse(localStorage.getItem('evolved_prototype_requests')||'[]');
+    existing.push(local);
+    localStorage.setItem('evolved_prototype_requests',JSON.stringify(existing));
+    status.textContent='Prototype saved locally — ClickUp turns on next.';
+  }
+});
+
+loadDashboard().catch(err=>{
+  console.error(err);
+  document.body.insertAdjacentHTML('afterbegin',`<div style="margin:12px;padding:10px;border:1px solid #e6d8bd;background:#fffaf0;border-radius:10px;font:12px system-ui;color:#7b5d24">Dashboard data could not be loaded: ${escapeHtml(err.message)}</div>`);
+});
+</script>
+</body>
+</html>
