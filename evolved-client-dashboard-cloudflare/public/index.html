@@ -5,34 +5,37 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Evolved Commerce | Client Dashboard</title>
   <meta name="description" content="Evolved Commerce Amazon client performance dashboard">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <main class="shell">
-    <header class="header">
-      <div>
-        <div class="brand">EVOLVED <span>COMMERCE</span></div>
-        <h1 id="client-name">Client Dashboard</h1>
-        <div class="subline">
-          <span id="period-label">Loading...</span>
-          <span class="separator">/</span>
-          <span id="updated-label">Loading latest data...</span>
-        </div>
+  <header class="site-header">
+    <div class="nav-inner">
+      <img class="brand-logo" src="/assets/evolved-commerce-logo.png" alt="Evolved Commerce">
+      <div class="nav-actions">
+        <span class="portal-label">CLIENT PORTAL</span>
+        <button class="orange-btn" id="request-work-btn">Request Work</button>
       </div>
-      <button class="primary-btn" id="request-work-btn">Request Work</button>
-    </header>
+    </div>
+  </header>
 
-    <section class="overview-card">
-      <div class="overview-copy">
-        <span class="eyebrow">PERFORMANCE SNAPSHOT</span>
-        <h2 id="snapshot-title">Current account performance</h2>
-        <p id="snapshot-detail">Loading current data...</p>
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="orange-kicker">AMAZON PERFORMANCE</span>
+        <h1 id="client-name">Client Dashboard</h1>
+        <p id="hero-summary">A clear view of current sales, advertising, product, and inventory data.</p>
       </div>
-      <div class="comparison-grid" id="comparison-grid"></div>
+      <div class="hero-meta">
+        <span id="period-label">Loading...</span>
+        <strong id="updated-label">Loading latest data...</strong>
+      </div>
     </section>
 
     <section class="kpi-grid">
-      <article class="kpi-card">
+      <article class="kpi-card accent">
         <span>Total Sales</span>
         <strong id="kpi-sales">—</strong>
         <small id="sales-goal">—</small>
@@ -59,24 +62,24 @@
       </article>
     </section>
 
+    <section class="comparison-bar" id="comparison-grid"></section>
+
+    <section class="section-heading">
+      <div><span>PERFORMANCE</span><h2>Sales & Advertising</h2></div>
+      <div class="orange-rule"></div>
+    </section>
+
     <section class="chart-grid">
       <article class="panel">
         <div class="panel-heading">
-          <div>
-            <span class="eyebrow">SALES</span>
-            <h3>Total Sales Trend</h3>
-          </div>
+          <div><span class="eyebrow">TOTAL SALES</span><h3>Monthly Trend</h3></div>
           <span class="panel-note">Completed months + current projection</span>
         </div>
         <div class="chart-wrap" id="sales-chart"></div>
       </article>
-
       <article class="panel">
         <div class="panel-heading">
-          <div>
-            <span class="eyebrow">ADVERTISING</span>
-            <h3>TACOS Trend</h3>
-          </div>
+          <div><span class="eyebrow">TACOS</span><h3>Advertising Efficiency</h3></div>
           <span class="panel-note" id="tacos-chart-target"></span>
         </div>
         <div class="chart-wrap" id="tacos-chart"></div>
@@ -85,27 +88,28 @@
 
     <section class="signal-grid">
       <article class="signal-card">
-        <span class="eyebrow">SALES & TRAFFIC</span>
+        <div class="signal-title"><span class="signal-mark"></span>Sales & Traffic</div>
         <div class="signal-list" id="sales-signals"></div>
       </article>
       <article class="signal-card">
-        <span class="eyebrow">ADVERTISING</span>
+        <div class="signal-title"><span class="signal-mark"></span>Advertising</div>
         <div class="signal-list" id="ad-signals"></div>
       </article>
       <article class="signal-card">
-        <span class="eyebrow">OPERATIONS</span>
+        <div class="signal-title"><span class="signal-mark"></span>Operations</div>
         <div class="signal-list" id="ops-signals"></div>
       </article>
+    </section>
+
+    <section class="section-heading">
+      <div><span>PRODUCTS</span><h2>Product & Inventory Snapshot</h2></div>
+      <div class="orange-rule"></div>
     </section>
 
     <section class="two-col">
       <article class="panel">
         <div class="panel-heading">
-          <div>
-            <span class="eyebrow">PRODUCTS</span>
-            <h3>Top Products</h3>
-          </div>
-          <span class="panel-note">Month to date</span>
+          <div><span class="eyebrow">TOP PRODUCTS</span><h3>Month-to-Date Sales</h3></div>
         </div>
         <div class="table-scroll">
           <table>
@@ -115,19 +119,19 @@
         </div>
       </article>
 
-      <article class="panel">
+      <article class="panel inventory-panel">
         <div class="panel-heading">
-          <div>
-            <span class="eyebrow">INVENTORY</span>
-            <h3>Availability Snapshot</h3>
-          </div>
-          <span class="metric-chip" id="inventory-count">—</span>
+          <div><span class="eyebrow">INVENTORY</span><h3>Replenishment</h3></div>
+          <button class="download-btn" id="download-inventory">Download CSV</button>
         </div>
+        <p class="inventory-copy" id="inventory-copy">Loading inventory recommendations...</p>
         <div class="inventory-summary">
           <div><strong id="out-of-stock">—</strong><span>Out of stock</span></div>
-          <div><strong id="order-now">—</strong><span>Reorder flags</span></div>
+          <div><strong id="order-now">—</strong><span>Order now</span></div>
+          <div><strong id="replenishment-units">—</strong><span>Recommended units</span></div>
         </div>
         <div class="inventory-list" id="inventory-list"></div>
+        <div class="inventory-footnote">The downloadable file includes all actionable replenishment recommendations, SKU, ASIN, FNSKU, current availability, inbound units, and recommended quantity.</div>
       </article>
     </section>
 
@@ -147,20 +151,16 @@
 
     <footer>
       <span>Evolved Commerce</span>
-      <span>Amazon Performance Dashboard</span>
+      <span>Evolve your Amazon business with us.</span>
     </footer>
   </main>
 
   <dialog id="request-dialog">
     <form id="request-form" method="dialog">
       <div class="modal-header">
-        <div>
-          <span class="eyebrow">CLIENT REQUEST</span>
-          <h2>Request Work</h2>
-        </div>
+        <div><span class="orange-kicker">CLIENT REQUEST</span><h2>Request Work</h2></div>
         <button type="button" class="icon-btn" id="close-dialog">×</button>
       </div>
-
       <div class="field">
         <label for="request-type">Request type</label>
         <select id="request-type" name="request_type" required>
@@ -173,40 +173,24 @@
       </div>
       <div class="field">
         <label for="request-summary">What do you need?</label>
-        <input id="request-summary" name="summary" maxlength="120" required placeholder="e.g. New main image for our sailcloth strap">
+        <input id="request-summary" name="summary" maxlength="120" required>
       </div>
       <div class="field">
         <label for="request-description">Details</label>
-        <textarea id="request-description" name="description" rows="5" required placeholder="Include any details, goals, or context that will help the team."></textarea>
+        <textarea id="request-description" name="description" rows="5" required></textarea>
       </div>
       <div class="field two-field">
-        <div>
-          <label for="request-asin">ASIN / SKU <span>(optional)</span></label>
-          <input id="request-asin" name="product_asin">
-        </div>
-        <div>
-          <label for="desired-date">Desired date <span>(optional)</span></label>
-          <input id="desired-date" name="desired_date" type="date">
-        </div>
+        <div><label for="request-asin">ASIN / SKU <span>(optional)</span></label><input id="request-asin" name="product_asin"></div>
+        <div><label for="desired-date">Desired date <span>(optional)</span></label><input id="desired-date" name="desired_date" type="date"></div>
       </div>
       <div class="field two-field">
-        <div>
-          <label for="requester-name">Your name</label>
-          <input id="requester-name" name="requester_name">
-        </div>
-        <div>
-          <label for="requester-email">Your email</label>
-          <input id="requester-email" name="requester_email" type="email">
-        </div>
+        <div><label for="requester-name">Your name</label><input id="requester-name" name="requester_name"></div>
+        <div><label for="requester-email">Your email</label><input id="requester-email" name="requester_email" type="email"></div>
       </div>
       <input type="hidden" name="client_slug" id="request-client-slug" value="anchorstrap">
-      <div class="modal-actions">
-        <span id="request-status"></span>
-        <button class="primary-btn" type="submit">Submit Request</button>
-      </div>
+      <div class="modal-actions"><span id="request-status"></span><button class="orange-btn" type="submit">Submit Request</button></div>
     </form>
   </dialog>
-
   <script src="/app.js"></script>
 </body>
 </html>
