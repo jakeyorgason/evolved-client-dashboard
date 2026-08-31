@@ -156,40 +156,104 @@
     </footer>
   </main>
 
-  <dialog id="request-dialog">
-    <form id="request-form" method="dialog">
+  <dialog id="request-dialog" class="request-dialog">
+    <form id="request-form">
       <div class="modal-header">
-        <div><span class="orange-kicker">CLIENT REQUEST</span><h2>Request Work</h2></div>
-        <button type="button" class="icon-btn" id="close-dialog">×</button>
+        <div>
+          <span class="orange-kicker">CLIENT REQUEST</span>
+          <h2>Request Work</h2>
+          <p>Tell us what you need and we’ll route it to the right Evolved team member.</p>
+        </div>
+        <button type="button" class="icon-btn" id="close-dialog" aria-label="Close">×</button>
       </div>
-      <div class="field">
-        <label for="request-type">Request type</label>
-        <select id="request-type" name="request_type" required>
-          <option value="">Choose one...</option>
-          <option value="design">Design</option>
-          <option value="copy">Copy</option>
-          <option value="promotion">Promotion</option>
-          <option value="new_product_upload">New Product Upload</option>
-        </select>
+
+      <div class="request-step">
+        <div class="request-step-label"><span>1</span> Request type</div>
+        <div class="request-type-grid" id="request-type-grid">
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="design" required>
+            <strong>Design</strong><small>Images, A+, storefront, creative</small>
+          </label>
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="copy" required>
+            <strong>Copy</strong><small>Listings, A+, keywords, content</small>
+          </label>
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="promotion" required>
+            <strong>Promotion</strong><small>Coupons, discounts, events</small>
+          </label>
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="new_product_upload" required>
+            <strong>New Product Upload</strong><small>Launch new catalog items</small>
+          </label>
+        </div>
       </div>
-      <div class="field">
-        <label for="request-summary">What do you need?</label>
-        <input id="request-summary" name="summary" maxlength="120" required>
+
+      <div id="request-core-fields" hidden>
+        <div class="request-step">
+          <div class="request-step-label"><span>2</span> Basics</div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="request-platform">Platform</label>
+              <select id="request-platform" name="platform" required>
+                <option value="">Choose platform...</option>
+                <option value="Amazon">Amazon</option>
+                <option value="Walmart">Walmart</option>
+                <option value="TikTok Shop">TikTok Shop</option>
+                <option value="Target Plus">Target Plus</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="desired-date">Desired completion date <span>(optional)</span></label>
+              <input id="desired-date" name="desired_date" type="date">
+            </div>
+          </div>
+          <div class="field">
+            <label for="request-summary">Request name</label>
+            <input id="request-summary" name="summary" maxlength="120" required placeholder="e.g. Launch new 20mm sailcloth colorways">
+          </div>
+          <div class="field">
+            <label for="request-products">Products / ASINs / SKUs <span>(if applicable)</span></label>
+            <textarea id="request-products" name="products" rows="2" placeholder="Paste ASINs, SKUs, product names, or a product family."></textarea>
+          </div>
+        </div>
+
+        <div class="request-step" id="request-specific-step">
+          <div class="request-step-label"><span>3</span> Request details</div>
+          <div id="request-specific-fields">
+            <div class="request-empty">Choose a request type and platform to see the information we need.</div>
+          </div>
+        </div>
+
+        <div class="request-step">
+          <div class="request-step-label"><span>4</span> Supporting information</div>
+          <div class="field">
+            <label for="source-link">Source files / Google Drive / product data link <span>(optional)</span></label>
+            <input id="source-link" name="source_link" type="url" placeholder="https://...">
+          </div>
+          <div class="field">
+            <label for="request-additional-context">Anything else we should know? <span>(optional)</span></label>
+            <textarea id="request-additional-context" name="additional_context" rows="3" placeholder="Add background, constraints, approvals, or other context."></textarea>
+          </div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="requester-name">Your name</label>
+              <input id="requester-name" name="requester_name" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="requester-email">Your email</label>
+              <input id="requester-email" name="requester_email" type="email" autocomplete="email">
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" name="client_slug" id="request-client-slug" value="anchorstrap">
+        <div class="modal-actions">
+          <span id="request-status"></span>
+          <button class="orange-btn" type="submit">Submit Request</button>
+        </div>
       </div>
-      <div class="field">
-        <label for="request-description">Details</label>
-        <textarea id="request-description" name="description" rows="5" required></textarea>
-      </div>
-      <div class="field two-field">
-        <div><label for="request-asin">ASIN / SKU <span>(optional)</span></label><input id="request-asin" name="product_asin"></div>
-        <div><label for="desired-date">Desired date <span>(optional)</span></label><input id="desired-date" name="desired_date" type="date"></div>
-      </div>
-      <div class="field two-field">
-        <div><label for="requester-name">Your name</label><input id="requester-name" name="requester_name"></div>
-        <div><label for="requester-email">Your email</label><input id="requester-email" name="requester_email" type="email"></div>
-      </div>
-      <input type="hidden" name="client_slug" id="request-client-slug" value="anchorstrap">
-      <div class="modal-actions"><span id="request-status"></span><button class="orange-btn" type="submit">Submit Request</button></div>
     </form>
   </dialog>
   <script src="/app.js"></script>
