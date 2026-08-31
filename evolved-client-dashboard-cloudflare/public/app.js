@@ -7,6 +7,8 @@ function slugFromHost(){const h=location.hostname.toLowerCase(),p=h.split('.');i
 async function loadDashboard(){const slug=slugFromHost();let data=null;try{const r=await fetch(`/api/dashboard?slug=${encodeURIComponent(slug)}`);if(r.ok)data=await r.json()}catch(e){}if(!data){const r=await fetch(`/data/${slug}.json`);if(!r.ok)throw new Error(`No dashboard data found for ${slug}`);data=await r.json();data.__seed=true}dashboard=data;render(data)}
 function render(d){
   $('client-name').textContent=d.client?.name||'Client Dashboard';
+  const strategyLink=$('strategy-doc-link');
+  if(d.client?.strategy_doc_url){strategyLink.href=d.client.strategy_doc_url;strategyLink.hidden=false}else{strategyLink.hidden=true}
   $('period-label').textContent=d.period_label||'';
   const through=d.data_through?.sales?new Date(d.data_through.sales+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
   $('updated-label').textContent=(through?`Data through ${through}`:'')+(d.__seed?' · Prototype data':'');
