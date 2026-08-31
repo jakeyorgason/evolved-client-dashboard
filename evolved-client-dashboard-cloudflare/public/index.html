@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Evolved Commerce | Client Dashboard</title>
+  <meta name="description" content="Evolved Commerce Amazon client performance dashboard">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="topbar"></div>
+  <main class="shell">
+    <header class="header">
+      <div>
+        <div class="brand">EVOLVED <span>COMMERCE</span></div>
+        <h1 id="client-name">Client Dashboard</h1>
+        <div class="subline">
+          <span id="period-label">Loading...</span>
+          <span class="dot">•</span>
+          <span id="updated-label">Loading latest data...</span>
+        </div>
+      </div>
+      <button class="primary-btn" id="request-work-btn">+ Request Work</button>
+    </header>
+
+    <section class="health-card" id="health-card">
+      <div class="health-main">
+        <div class="eyebrow">ACCOUNT HEALTH</div>
+        <div class="health-title-row">
+          <span class="health-dot"></span>
+          <h2 id="health-headline">Loading account health...</h2>
+        </div>
+        <p id="health-detail"></p>
+      </div>
+      <div class="health-grid" id="health-grid"></div>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card">
+        <span>Total Sales</span>
+        <strong id="kpi-sales">—</strong>
+        <small id="sales-goal">—</small>
+      </article>
+      <article class="kpi-card">
+        <span>Ad Sales</span>
+        <strong id="kpi-ad-sales">—</strong>
+        <small>Attributed advertising sales</small>
+      </article>
+      <article class="kpi-card">
+        <span>Ad Spend</span>
+        <strong id="kpi-ad-spend">—</strong>
+        <small id="spend-note">Month to date</small>
+      </article>
+      <article class="kpi-card">
+        <span>ROAS</span>
+        <strong id="kpi-roas">—</strong>
+        <small id="roas-target">—</small>
+      </article>
+      <article class="kpi-card">
+        <span>TACOS</span>
+        <strong id="kpi-tacos">—</strong>
+        <small id="tacos-target">—</small>
+      </article>
+    </section>
+
+    <section class="chart-grid">
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">PERFORMANCE</span>
+            <h3>Total Sales Trend</h3>
+          </div>
+          <span class="panel-note">Completed months + current projection</span>
+        </div>
+        <div class="chart-wrap" id="sales-chart"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">EFFICIENCY</span>
+            <h3>TACOS Trend</h3>
+          </div>
+          <span class="panel-note" id="tacos-chart-target"></span>
+        </div>
+        <div class="chart-wrap" id="tacos-chart"></div>
+      </article>
+    </section>
+
+    <section class="insight-grid">
+      <article class="insight-card win">
+        <div class="insight-icon">✓</div>
+        <div>
+          <span class="eyebrow">WINS</span>
+          <ul id="wins-list"></ul>
+        </div>
+      </article>
+      <article class="insight-card focus">
+        <div class="insight-icon">→</div>
+        <div>
+          <span class="eyebrow">CURRENT FOCUS</span>
+          <ul id="focus-list"></ul>
+        </div>
+      </article>
+      <article class="insight-card watch">
+        <div class="insight-icon">!</div>
+        <div>
+          <span class="eyebrow">WATCHING</span>
+          <ul id="watch-list"></ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="two-col">
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">PRODUCTS</span>
+            <h3>Top Products</h3>
+          </div>
+          <span class="panel-note">Month to date</span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Product</th><th>Sales</th><th>Trend</th><th>CVR</th></tr></thead>
+            <tbody id="product-table"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">ACCOUNT WATCH</span>
+            <h3>Inventory</h3>
+          </div>
+          <span class="pill pill-alert" id="inventory-count">—</span>
+        </div>
+        <div class="inventory-summary">
+          <div><strong id="out-of-stock">—</strong><span>Out of Stock</span></div>
+          <div><strong id="order-now">—</strong><span>Order Now</span></div>
+        </div>
+        <div class="inventory-list" id="inventory-list"></div>
+      </article>
+    </section>
+
+    <section class="panel definitions">
+      <details>
+        <summary>What do these metrics mean?</summary>
+        <div class="definition-grid">
+          <div><strong>Total Sales</strong><p>All Amazon sales during the current reporting period.</p></div>
+          <div><strong>Ad Sales</strong><p>Sales Amazon attributes to advertising.</p></div>
+          <div><strong>Ad Spend</strong><p>Amount spent on Amazon advertising.</p></div>
+          <div><strong>ROAS</strong><p>Advertising sales generated for every $1 spent. Higher is generally better.</p></div>
+          <div><strong>TACOS</strong><p>Ad spend divided by total sales. It shows how advertising investment relates to the whole business.</p></div>
+          <div><strong>Conversion Rate</strong><p>The percentage of product-page sessions that result in an order.</p></div>
+        </div>
+      </details>
+    </section>
+
+    <footer>
+      <span>Evolved Commerce</span>
+      <span>Amazon Growth Dashboard</span>
+    </footer>
+  </main>
+
+  <dialog id="request-dialog">
+    <form id="request-form" method="dialog">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">CLIENT REQUEST</span>
+          <h2>Request Work</h2>
+        </div>
+        <button type="button" class="icon-btn" id="close-dialog">×</button>
+      </div>
+
+      <div class="field">
+        <label for="request-type">Request type</label>
+        <select id="request-type" name="request_type" required>
+          <option value="">Choose one...</option>
+          <option value="design">Design</option>
+          <option value="copy">Copy</option>
+          <option value="promotion">Promotion</option>
+          <option value="new_product_upload">New Product Upload</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="request-summary">What do you need?</label>
+        <input id="request-summary" name="summary" maxlength="120" required placeholder="e.g. New main image for our sailcloth strap">
+      </div>
+      <div class="field">
+        <label for="request-description">Details</label>
+        <textarea id="request-description" name="description" rows="5" required placeholder="Include any details, goals, or context that will help the team."></textarea>
+      </div>
+      <div class="field two-field">
+        <div>
+          <label for="request-asin">ASIN / SKU <span>(optional)</span></label>
+          <input id="request-asin" name="product_asin">
+        </div>
+        <div>
+          <label for="desired-date">Desired date <span>(optional)</span></label>
+          <input id="desired-date" name="desired_date" type="date">
+        </div>
+      </div>
+      <div class="field two-field">
+        <div>
+          <label for="requester-name">Your name</label>
+          <input id="requester-name" name="requester_name">
+        </div>
+        <div>
+          <label for="requester-email">Your email</label>
+          <input id="requester-email" name="requester_email" type="email">
+        </div>
+      </div>
+      <input type="hidden" name="client_slug" id="request-client-slug" value="anchorstrap">
+      <div class="modal-actions">
+        <span id="request-status"></span>
+        <button class="primary-btn" type="submit">Submit Request</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/app.js"></script>
+</body>
+</html>
