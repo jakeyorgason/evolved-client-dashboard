@@ -124,3 +124,14 @@ table{line-height:1.35}
   .kpi-card strong{font-size:25px}
   .hero p{font-size:12px}
 }
+
+
+/* V7 chart readability */
+.chart-grid{grid-template-columns:1.2fr 1fr}
+.chart-wrap{height:280px}
+.axis-label{fill:#6D767B;font:300 11px Montserrat,sans-serif}
+.chart-value{fill:#415A68;font:600 11px Montserrat,sans-serif;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.tacos-axis-label{fill:#6D767B;font:300 11px Montserrat,sans-serif}
+.tacos-data-label{fill:#23323B;font:600 12px Montserrat,sans-serif;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+.tacos-target-label{fill:#D9541F;font:600 10px Montserrat,sans-serif;paint-order:stroke;stroke:#fff;stroke-width:3px}
+@media(max-width:900px){.chart-grid{grid-template-columns:1fr}.chart-wrap{height:300px}}
