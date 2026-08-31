@@ -3,7 +3,8 @@
   "client": {
     "name": "Anchor Strap",
     "slug": "anchorstrap",
-    "host": "anchorstrap.evolvedcommerce.com"
+    "host": "anchorstrap.evolvedcommerce.com",
+    "strategy_doc_url": "https://docs.google.com/spreadsheets/d/1ckDwmXgdOjxnVnVpndCUT1IrY-J8Hl6Y8O3nzeKSU0g/edit"
   },
   "generated_at": "2026-08-31T15:19:26.485Z",
   "generated_at_local": "2026-08-31 09:19:26",
