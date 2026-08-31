@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Evolved Commerce | Client Dashboard</title>
+  <meta name="description" content="Evolved Commerce Amazon client performance dashboard">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+  <style>:root{
+  --charcoal:#23323B;--navy:#102333;--navy-2:#142B3D;--slate:#415A68;--slate-2:#516878;--mist:#8FA2AF;
+  --orange:#F47322;--orange-dark:#D9541F;--orange-soft:#F09E55;--gold:#FDBA31;
+  --neutral:#6D767B;--paper:#F5F5F5;--white:#FFFFFF;--line:#E1E5E7;--soft:#FAFAFA;
+  --blue:#4B7CF3;--blue-soft:#7CA3FF;--pink:#D65ACB;
+  --shadow:0 10px 28px rgba(35,50,59,.055)
+}
+*{box-sizing:border-box}
+html{background:var(--paper);scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--charcoal);font-family:"Montserrat",Arial,sans-serif;font-weight:300}
+.site-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.header-inner{width:min(1280px,calc(100% - 44px));height:74px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand-logo{width:174px;height:auto;display:block}
+.header-actions{display:flex;align-items:center;gap:18px}.portal-label{font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--slate-3)}
+.secondary-link{color:var(--slate);text-decoration:none;font-size:10px;font-weight:600;border-bottom:1px solid rgba(65,90,104,.28);padding:3px 0;transition:.15s ease}
+.secondary-link:hover{color:var(--orange);border-bottom-color:var(--orange)}
+.orange-btn{border:0;border-radius:4px;background:var(--orange);color:#fff;font:600 11px "Montserrat",sans-serif;padding:13px 18px;cursor:pointer;transition:.15s ease}
+.orange-btn:hover{background:var(--orange-dark);transform:translateY(-1px)}
+
+.shell{width:min(1280px,calc(100% - 44px));margin:0 auto;padding:24px 0 38px}
+
+.hero-card{
+  min-height:178px;border-radius:8px;background:linear-gradient(135deg,#122333,#1A3448);
+  padding:32px 34px;display:flex;justify-content:space-between;align-items:flex-end;gap:30px;position:relative;overflow:hidden;margin-bottom:14px;
+  box-shadow:0 18px 44px rgba(16,35,51,.12)
+}
+.hero-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 77% 18%,rgba(244,115,34,.12),transparent 18rem)}
+.hero-orbit{position:absolute;width:390px;height:390px;border:2px solid rgba(244,115,34,.28);border-radius:50%;right:-205px;top:-200px;box-shadow:0 0 44px rgba(244,115,34,.09) inset}
+.hero-copy,.hero-meta{position:relative;z-index:2}
+.kicker,.orange-kicker{display:block;color:var(--orange);font-size:10px;font-weight:600;letter-spacing:.16em}
+.hero-copy h1{color:#fff;font-size:38px;line-height:1.05;margin:7px 0 11px;font-weight:800;letter-spacing:-.03em}
+.hero-copy p{color:#CBD5DA;font-size:12px;line-height:1.65;margin:0;max-width:700px}
+.hero-meta{text-align:right;color:#fff;font-size:10px;line-height:1.7}.hero-meta span{display:block;color:#AFC0C9}.hero-meta strong{font-weight:600}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:10px}
+.kpi-card{background:#fff;border:1px solid var(--line);border-radius:7px;padding:16px 16px 14px;box-shadow:var(--shadow);min-height:126px}
+.kpi-card.featured{border-left:4px solid var(--orange);padding-left:13px}
+.kpi-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.kpi-top span{font-size:10px;color:var(--slate-2);font-weight:600}.kpi-top strong{display:block;font-size:25px;font-weight:800;letter-spacing:-.035em;margin-top:7px}
+.kpi-icon{width:30px;height:30px;border-radius:50%;background:#F6F7F8;border:1px solid #E8ECEE;color:var(--slate);display:flex;align-items:center;justify-content:center;font-weight:600}
+.kpi-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:12px}.kpi-bottom small{font-size:8px;color:#8F999F;line-height:1.45;max-width:120px}
+.mini-spark{width:78px;height:30px;flex:0 0 78px}
+
+.metric-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:1px solid var(--line);border-radius:7px;box-shadow:var(--shadow);margin-bottom:14px}
+.strip-item{padding:14px 17px;border-right:1px solid var(--line)}.strip-item:last-child{border-right:0}
+.strip-item span{font-size:9px;color:#6F7B81;font-weight:600}.strip-item strong{display:block;font-size:14px;font-weight:800;margin-top:4px}.strip-item small{font-size:8px;color:#9AA3A8;display:block;margin-top:3px}
+
+.dark-analytics{
+  background:linear-gradient(180deg,#0F2030,#102638);border-radius:9px;padding:18px;margin:14px 0;
+  box-shadow:0 18px 42px rgba(16,35,51,.14)
+}
+.dark-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:12px}
+.dark-heading h2{margin:4px 0 0;color:#fff;font-size:18px;font-weight:800}
+.period-switch{display:flex;gap:4px}.period-switch button{border:1px solid rgba(255,255,255,.12);background:transparent;color:#8FA2AF;border-radius:4px;padding:6px 9px;font:600 8px Montserrat,sans-serif}.period-switch button.active{color:#fff;border-color:var(--orange);background:rgba(244,115,34,.08)}
+.dark-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dark-chart-card{border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.015));border-radius:8px;padding:16px 16px 13px}
+.chart-card-heading{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.dark-eyebrow{font-size:9px;color:var(--orange);font-weight:600;letter-spacing:.12em}.chart-card-heading h3{color:#fff;font-size:16px;margin:4px 0 0;font-weight:800}
+.chart-stat{text-align:right}.chart-stat strong{display:block;color:#fff;font-size:19px;font-weight:800}.chart-stat span{font-size:8px;color:#8EA0AA}
+.premium-chart{height:260px;margin-top:7px}
+.premium-chart svg{width:100%;height:100%;display:block}
+.chart-footer{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:11px 12px;margin-top:10px}
+.chart-footer div{border-right:1px solid rgba(255,255,255,.09);padding-right:10px}.chart-footer div:last-child{border-right:0}.chart-footer span{display:block;color:#8EA0AA;font-size:8px}.chart-footer strong{display:block;color:#fff;font-size:11px;margin-top:4px}
+
+.lower-grid{display:grid;grid-template-columns:.8fr 1.6fr;gap:12px;margin-bottom:10px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:7px;padding:18px;box-shadow:var(--shadow)}
+.panel-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}.eyebrow{font-size:9px;color:var(--orange);font-weight:600;letter-spacing:.12em}.panel-heading h3{font-size:15px;font-weight:800;margin:4px 0 0}
+.outline-btn{border:1px solid var(--slate);background:#fff;color:var(--slate);border-radius:4px;padding:8px 10px;font:600 8px Montserrat,sans-serif;cursor:pointer}.outline-btn:hover{border-color:var(--orange);color:var(--orange)}
+
+.donut-wrap{display:flex;align-items:center;gap:20px}.inventory-donut{width:126px;height:126px;border-radius:50%;background:conic-gradient(var(--orange) 0 54%,var(--gold) 54% 78%,var(--slate) 78% 100%);display:grid;place-items:center;position:relative}.inventory-donut:after{content:"";width:76px;height:76px;border-radius:50%;background:#fff;position:absolute}.donut-center{position:relative;z-index:2;text-align:center}.donut-center strong{display:block;font-size:26px;font-weight:800}.donut-center span{font-size:8px;color:#7B878D}
+.donut-legend{flex:1}.donut-legend div{display:grid;grid-template-columns:10px 1fr auto;gap:7px;align-items:center;padding:7px 0;border-bottom:1px solid #EEF0F1}.donut-legend div:last-child{border-bottom:0}.dot{width:8px;height:8px;border-radius:50%;display:block}.dot.orange{background:var(--orange)}.dot.gold{background:var(--gold)}.dot.slate{background:var(--slate)}.donut-legend span,.donut-legend strong{font-size:9px}.donut-legend span{color:#6F7B81}.donut-legend strong{font-weight:600}
+
+table{width:100%;border-collapse:collapse}.refill-table-wrap,.table-scroll{overflow:auto}
+th{text-align:left;font-size:8px;letter-spacing:.08em;color:#8A9499;text-transform:uppercase;padding:7px 8px;border-bottom:1px solid var(--line);font-weight:600}
+td{font-size:10px;padding:10px 8px;border-bottom:1px solid #EDF0F1;vertical-align:middle}.status-pill{display:inline-block;padding:3px 6px;border-radius:999px;font-size:7px;font-weight:600;background:#FFF3EB;color:var(--orange-dark)}.status-pill.order{background:#FFF8E4;color:#996C00}
+.compact-products{margin-bottom:10px}.product-name{font-weight:600}.asin{display:block;color:#98A2A7;font-size:8px;margin-top:3px}.change{font-weight:600;color:var(--slate)}
+
+.tool-card{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid #EDF0F1}.tool-card:last-child{border-bottom:0}.tool-icon{width:30px;height:30px;border-radius:50%;background:#FFF3EB;color:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:600}.tool-card strong{display:block;font-size:10px}.tool-card span{display:block;font-size:8px;color:#859097;line-height:1.4;margin-top:3px}.tool-action{font-size:9px;font-weight:600;color:var(--orange-dark);text-decoration:none}.button-link{background:none;border:0;padding:0;cursor:pointer;font-family:inherit}
+
+.definitions{padding:0}.definitions details{padding:16px 18px}.definitions summary{cursor:pointer;font-size:10px;font-weight:600}.definition-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:15px}.definition-grid strong{font-size:10px}.definition-grid p{font-size:9px;line-height:1.55;color:#7F898E;margin:4px 0 0}
+footer{display:flex;justify-content:space-between;color:#8C969B;font-size:8px;padding:17px 1px 0}
+
+/* Modal / request center retained from V8 */
+dialog{width:min(820px,calc(100% - 30px));max-height:88vh;overflow:auto;border:0;border-radius:5px;padding:0;box-shadow:0 30px 80px rgba(35,50,59,.25)}
+dialog::backdrop{background:rgba(35,50,59,.52);backdrop-filter:blur(3px)}
+.request-dialog #request-form{padding:26px}.request-dialog .modal-header{position:sticky;top:-26px;z-index:4;background:#fff;margin:-26px -26px 18px;padding:26px 26px 18px;border-bottom:1px solid var(--line)}
+.request-dialog .modal-header p{font-size:10px;color:#7f898e;line-height:1.5;margin:6px 0 0}.modal-header{display:flex;justify-content:space-between;align-items:flex-start}.modal-header h2{font-size:22px;font-weight:800;margin:3px 0 0}.icon-btn{border:0;background:#f1f3f4;width:32px;height:32px;border-radius:3px;font-size:20px;cursor:pointer}
+.request-step{padding:17px 0;border-bottom:1px solid #edf0f1}.request-step:last-of-type{border-bottom:0}.request-step-label{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:600;color:var(--slate);letter-spacing:.02em;margin-bottom:13px}.request-step-label span{width:20px;height:20px;border-radius:50%;background:var(--charcoal);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:9px}
+.request-type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.request-type-card{position:relative;border:1px solid var(--line);border-radius:4px;padding:13px 12px;cursor:pointer;background:#fff;transition:.15s ease;min-height:76px}.request-type-card:hover{border-color:#c9d0d4;transform:translateY(-1px)}.request-type-card:has(input:checked){border-color:var(--orange);box-shadow:inset 0 -3px 0 var(--orange);background:#fffaf7}.request-type-card input{position:absolute;opacity:0;pointer-events:none;width:1px}.request-type-card strong{display:block;font-size:10px;font-weight:600;margin-bottom:5px}.request-type-card small{font-size:8px;line-height:1.45;color:#8b959b}
+.field{margin:13px 0}.field label{display:block;font-size:9px;font-weight:600;color:#56646b;margin-bottom:6px}.field label span{font-weight:300;color:#90999e}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field-grid.three{grid-template-columns:repeat(3,1fr)}.field-grid.four{grid-template-columns:repeat(4,1fr)}
+input,select,textarea{width:100%;border:1px solid #d9dfe2;border-radius:3px;padding:10px 11px;font:300 10px Montserrat,sans-serif;color:var(--charcoal);background:#fff;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 2px rgba(244,115,34,.11)}
+.request-section{background:#f8f9f9;border:1px solid #e8ebec;border-radius:4px;padding:14px;margin:10px 0}.request-section-title{font-size:9px;font-weight:600;color:var(--orange-dark);letter-spacing:.1em;text-transform:uppercase;margin-bottom:11px}.request-help{font-size:8px;line-height:1.55;color:#8a9499;margin:4px 0 10px}.request-requirement-note{background:#fff7f2;border-left:3px solid var(--orange);padding:10px 12px;font-size:8px;line-height:1.6;color:#6f7a80;margin:10px 0 13px}.request-empty{font-size:9px;color:#929ca2;padding:7px 0}.check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px 10px}.check-option{display:flex;align-items:flex-start;gap:7px;font-size:9px;color:#56646b}.check-option input{width:auto;margin:1px 0 0;accent-color:var(--orange)}
+.template-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:10px 11px;margin:8px 0 12px}.template-row div strong{display:block;font-size:9px;font-weight:600}.template-row div small{display:block;font-size:8px;color:#8a9499;margin-top:3px}.template-btn{border:1px solid var(--slate);background:#fff;color:var(--slate);border-radius:3px;padding:7px 10px;font:600 8px Montserrat,sans-serif;cursor:pointer;white-space:nowrap}.required-tag{display:inline-block;background:#eef1f2;color:#68757c;border-radius:2px;padding:2px 4px;font-size:7px;font-weight:600;margin-left:5px}
+.modal-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;bottom:-26px;background:#fff;margin:12px -26px -26px;padding:15px 26px 26px;border-top:1px solid var(--line)}#request-status{font-size:9px;color:#7f898e}
+
+@media(max-width:1050px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .dark-chart-grid,.lower-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .header-inner,.shell{width:min(100% - 24px,1280px)}
+  .brand-logo{width:150px}.portal-label{display:none}.secondary-link{font-size:9px}
+  .hero-card{min-height:auto;padding:26px 22px;display:block}.hero-meta{text-align:left;margin-top:22px}
+  .metric-strip{grid-template-columns:1fr 1fr}.strip-item:nth-child(2){border-right:0}.strip-item:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .dark-heading{display:block}.period-switch{margin-top:10px}
+  .request-type-grid{grid-template-columns:1fr 1fr}
+  .field-grid,.field-grid.three,.field-grid.four{grid-template-columns:1fr}
+  .check-grid{grid-template-columns:1fr}
+  .definition-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  .kpi-grid{grid-template-columns:1fr}
+  .metric-strip{grid-template-columns:1fr}.strip-item{border-right:0;border-bottom:1px solid var(--line)}.strip-item:last-child{border-bottom:0}
+  .definition-grid{grid-template-columns:1fr}
+}
+
+
+/* V10 — restore full-size Sales & Advertising charts */
+.section-heading.premium-heading{
+  display:flex;align-items:flex-end;gap:18px;margin:24px 0 11px
+}
+.section-heading.premium-heading>div:first-child{white-space:nowrap}
+.section-heading.premium-heading h2{
+  margin:4px 0 0;font-size:20px;font-weight:800;letter-spacing:-.02em
+}
+.orange-rule{
+  height:2px;flex:1;margin-bottom:4px;
+  background:linear-gradient(90deg,var(--orange),rgba(244,115,34,0))
+}
+.performance-chart-grid{
+  display:grid;grid-template-columns:1.25fr 1fr;gap:12px;margin-bottom:18px
+}
+.performance-panel{
+  background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 18px 14px;
+  box-shadow:0 12px 30px rgba(35,50,59,.055)
+}
+.performance-panel-heading{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:8px
+}
+.performance-panel-heading h3{
+  margin:4px 0 0;font-size:16px;font-weight:800;letter-spacing:-.01em
+}
+.panel-note{font-size:8px;color:#929CA2;text-align:right;line-height:1.5}
+.performance-chart{height:300px}
+.performance-chart svg{width:100%;height:100%;display:block}
+.light-axis{fill:#78858C;font:300 10px Montserrat,sans-serif}
+.light-value{
+  fill:#415A68;font:600 10px Montserrat,sans-serif;
+  paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round
+}
+.light-target{
+  fill:#D9541F;font:600 9px Montserrat,sans-serif;
+  paint-order:stroke;stroke:#fff;stroke-width:3px
+}
+
+@media(max-width:1050px){
+  .performance-chart-grid{grid-template-columns:1fr}
+  .performance-chart{height:310px}
+}
+@media(max-width:650px){
+  .performance-chart{height:260px}
+  .performance-panel{padding:15px 12px 12px}
+}
+
+
+/* V11 — unify large chart sections */
+.performance-panel{
+  background:linear-gradient(180deg,#173041 0%, #0F2230 100%) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  box-shadow:0 20px 44px rgba(6,18,29,.20) !important;
+}
+.performance-panel-heading .eyebrow{
+  color:var(--orange) !important;
+}
+.performance-panel-heading h3{
+  color:#fff !important;
+}
+.performance-panel .panel-note{
+  color:rgba(255,255,255,.52) !important;
+}
+.performance-chart .light-axis{
+  fill:rgba(255,255,255,.54) !important;
+}
+.performance-chart .light-value{
+  fill:#fff !important;
+  stroke:#173041 !important;
+}
+.performance-chart .light-target{
+  fill:#F47322 !important;
+  stroke:#173041 !important;
+}
+.performance-chart-grid{
+  margin-bottom:14px !important;
+}
+
+/* Make Traffic & Conversion header cleaner and less dominant */
+.dark-analytics-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:10px;
+}
+.dark-analytics-title h2{
+  margin:2px 0 0;
+  font-size:18px !important;
+  font-weight:800;
+  line-height:1.15;
+}
+.dark-analytics-title p{
+  margin:4px 0 0;
+  font-size:10px !important;
+  line-height:1.4;
+  color:rgba(255,255,255,.48) !important;
+  max-width:760px;
+}
+
+/* If the helper sentence exists, visually de-emphasize it */
+.dark-analytics-subtitle,
+.dark-analytics-header .subtitle,
+.dark-analytics-header .lede{
+  font-size:10px !important;
+  color:rgba(255,255,255,.48) !important;
+  font-weight:500 !important;
+  margin-top:4px !important;
+}
+
+@media(max-width:700px){
+  .dark-analytics-title h2{font-size:16px !important}
+  .dark-analytics-title p{font-size:9px !important}
+}
+
+
+/* V12 — two-column inventory section */
+.lower-grid{
+  grid-template-columns:minmax(320px,.82fr) minmax(0,1.65fr);
+  align-items:stretch;
+}
+.lower-grid .panel{
+  height:100%;
+}
+.inventory-health{
+  min-height:310px;
+}
+.refill-panel{
+  min-height:310px;
+}
+.refill-panel .refill-table-wrap{
+  max-height:240px;
+  overflow:auto;
+}
+@media(max-width:900px){
+  .lower-grid{
+    grid-template-columns:1fr;
+  }
+  .inventory-health,
+  .refill-panel{
+    min-height:auto;
+  }
+}
+
+
+/* =========================================================
+   V13 — Full-page dark premium treatment
+   ========================================================= */
+
+:root{
+  --page:#09131C;
+  --surface:#10212E;
+  --surface-2:#142938;
+  --surface-3:#183041;
+  --surface-soft:#1C3546;
+  --text-main:#F4F7F9;
+  --text-secondary:#C0CBD1;
+  --text-muted:#8FA0AA;
+  --dark-line:rgba(255,255,255,.10);
+  --dark-line-strong:rgba(255,255,255,.16);
+}
+
+html,body{background:var(--page)!important;color:var(--text-main)!important}
+body{
+  background:
+    radial-gradient(circle at 50% -10%,rgba(244,115,34,.08),transparent 38rem),
+    linear-gradient(180deg,#0A151E 0%,#08121A 100%)!important;
+}
+
+.site-header{
+  background:rgba(9,19,28,.96)!important;
+  border-bottom:1px solid var(--dark-line)!important;
+  backdrop-filter:blur(14px);
+}
+.portal-label{color:#9FB0B9!important}
+.secondary-link{color:#D3DDE2!important;border-bottom-color:rgba(255,255,255,.2)!important}
+.secondary-link:hover{color:var(--orange)!important;border-bottom-color:var(--orange)!important}
+.brand-logo{
+  background:#fff;
+  border-radius:5px;
+  padding:7px 10px;
+  width:180px!important;
+}
+
+.hero-card{
+  background:
+    radial-gradient(circle at 76% 25%,rgba(244,115,34,.11),transparent 18rem),
+    linear-gradient(135deg,#142B3A,#0D1F2B)!important;
+  border:1px solid var(--dark-line)!important;
+  box-shadow:0 22px 54px rgba(0,0,0,.24)!important
+}
+
+.kpi-card{
+  background:linear-gradient(180deg,#122532,#10212E)!important;
+  border:1px solid var(--dark-line)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.17)!important;
+  min-height:122px!important;
+}
+.kpi-card.featured{border-left:3px solid var(--orange)!important;padding-left:16px!important}
+.kpi-card-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.kpi-card-header>span{
+  color:#A9B8C0!important;
+  font-size:10px!important;
+  font-weight:600!important
+}
+.kpi-card>strong{
+  display:block;
+  color:#fff!important;
+  font-size:27px!important;
+  font-weight:800!important;
+  letter-spacing:-.035em;
+  margin:15px 0 7px!important
+}
+.kpi-card>small{color:#899BA5!important;font-size:9px!important;line-height:1.45}
+.kpi-icon{
+  width:32px!important;height:32px!important;
+  border-radius:50%!important;
+  display:grid!important;place-items:center!important;
+  background:rgba(244,115,34,.09)!important;
+  border:1px solid rgba(244,115,34,.23)!important;
+  color:var(--orange)!important;
+}
+.kpi-icon svg{
+  width:17px;height:17px;
+  fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round
+}
+
+/* Remove all legacy mini graph footprint */
+.mini-spark,.kpi-bottom{display:none!important}
+
+.metric-strip{
+  background:linear-gradient(180deg,#122532,#10212E)!important;
+  border:1px solid var(--dark-line)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.14)!important
+}
+.strip-item{border-color:var(--dark-line)!important}
+.strip-item span{color:#93A5AF!important}
+.strip-item strong{color:#fff!important;font-size:15px!important}
+.strip-item small{color:#7F929D!important;font-size:9px!important}
+
+/* Main section heading on dark page */
+.section-heading.premium-heading h2{color:#fff!important}
+.section-heading.premium-heading .kicker{color:var(--orange)!important}
+
+/* Make all major analytics blocks live in the same dark visual system */
+.performance-panel,
+.dark-analytics,
+.dark-chart-card{
+  background:linear-gradient(180deg,#142B3A,#0E202D)!important;
+  border:1px solid var(--dark-line)!important;
+  box-shadow:0 20px 44px rgba(0,0,0,.18)!important
+}
+.performance-panel-heading h3,
+.dark-heading h2,
+.chart-card-heading h3{color:#fff!important}
+.performance-panel .panel-note{color:#8EA0AA!important}
+.dark-analytics{
+  margin-top:16px!important;
+  padding:18px!important
+}
+.dark-title-block h2{
+  font-size:22px!important;
+  margin:3px 0 0!important;
+  color:#fff!important
+}
+.dark-title-block p{
+  margin:6px 0 0!important;
+  max-width:700px;
+  color:#95A6AF!important;
+  font-size:10px!important;
+  line-height:1.55!important
+}
+
+/* Increase chart contrast */
+.performance-chart .light-axis,
+.dark-axis{fill:#9FB0B9!important}
+.performance-chart .light-value,
+.dark-value{fill:#fff!important}
+.performance-chart .light-target{fill:#FF8A3D!important}
+.performance-panel-heading .eyebrow,
+.dark-eyebrow{color:#FF8A3D!important}
+
+/* Stronger, clearer footer stats under Traffic / Conversion */
+.chart-footer{
+  background:#1A3445!important;
+  border:1px solid var(--dark-line-strong)!important;
+  padding:12px 14px!important;
+  gap:10px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)
+}
+.chart-footer div{
+  border-right:1px solid rgba(255,255,255,.12)!important;
+  padding:2px 12px 2px 0!important
+}
+.chart-footer div:last-child{border-right:0!important;padding-right:0!important}
+.chart-footer span{
+  color:#9DAEB7!important;
+  font-size:9px!important;
+  font-weight:600!important;
+  text-transform:uppercase;
+  letter-spacing:.05em
+}
+.chart-footer strong{
+  color:#fff!important;
+  font-size:14px!important;
+  margin-top:5px!important;
+  font-weight:800!important
+}
+.chart-stat strong{color:#fff!important;font-size:21px!important}
+.chart-stat span{color:#93A4AD!important;font-size:9px!important}
+
+/* Lower cards */
+.panel,
+.compact-products,
+.definitions{
+  background:linear-gradient(180deg,#122532,#10212E)!important;
+  border:1px solid var(--dark-line)!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.16)!important;
+  color:#fff!important
+}
+.panel-heading h3{color:#fff!important}
+.panel-heading .eyebrow{color:var(--orange)!important}
+.outline-btn{
+  background:transparent!important;
+  border-color:rgba(255,255,255,.28)!important;
+  color:#DCE5E9!important
+}
+.outline-btn:hover{color:var(--orange)!important;border-color:var(--orange)!important}
+
+/* Donut / lower text */
+.inventory-donut:after{background:#10212E!important}
+.donut-center strong{color:#fff!important}
+.donut-center span{color:#99AAB3!important}
+.donut-legend div{border-bottom-color:var(--dark-line)!important}
+.donut-legend span{color:#A5B5BD!important}
+.donut-legend strong{color:#fff!important}
+
+/* Tables */
+th{
+  color:#92A4AD!important;
+  border-bottom-color:var(--dark-line)!important
+}
+td{
+  color:#D4DEE3!important;
+  border-bottom-color:rgba(255,255,255,.07)!important
+}
+.product-name{color:#fff!important}
+.asin{color:#82949E!important}
+.change{color:#D7E1E6!important}
+.status-pill{background:rgba(244,115,34,.13)!important;color:#FF9A56!important}
+.status-pill.order{background:rgba(253,186,49,.12)!important;color:#F7CB68!important}
+
+.definitions summary{color:#DDE6EA!important}
+.definition-grid strong{color:#fff!important}
+.definition-grid p{color:#95A6AF!important}
+footer{color:#738691!important}
+
+/* Request modal stays light for form readability */
+dialog{color:#23323B!important}
+dialog #request-form,
+dialog .modal-header,
+dialog .modal-actions{background:#fff!important}
+
+/* Force every chart marker to use a white center for consistency */
+.performance-chart circle,
+.premium-chart circle{
+  fill:#fff!important;
+}
+
+/* Header labels */
+.period-switch button{color:#94A6AF!important}
+.period-switch button.active{color:#fff!important}
+
+@media(max-width:760px){
+  .brand-logo{width:154px!important}
+  .dark-title-block h2{font-size:19px!important}
+}
+
+
+/* V14 — dark header logo treatment */
+.brand-logo{
+  background:transparent!important;
+  border-radius:0!important;
+  padding:0!important;
+  width:178px!important;
+  filter:none!important;
+}
+@media(max-width:760px){
+  .brand-logo{width:150px!important}
+}
+
+
+/* =========================================================
+   V15 — readable secondary text + functional lookback controls
+   ========================================================= */
+
+/* Secondary text should remain visibly secondary — not disappear */
+.hero-copy p{color:#D2DCE1!important}
+.hero-meta span{color:#B6C4CB!important}
+.hero-meta strong{color:#F7F9FA!important}
+
+.kpi-card-header>span{color:#C1CDD3!important}
+.kpi-card>small{color:#AEBCC4!important}
+.strip-item span{color:#B7C5CC!important}
+.strip-item small{color:#A3B3BC!important}
+
+.performance-panel .panel-note,
+.panel-note{color:#AAB9C1!important}
+.dark-title-block p{color:#B8C5CB!important}
+.chart-stat span{color:#AEBCC4!important}
+
+.performance-chart .light-axis,
+.dark-axis{fill:#B8C5CB!important}
+.performance-chart .light-value,
+.dark-value{fill:#FFFFFF!important}
+
+.chart-footer{
+  background:#203B4C!important;
+  border-color:rgba(255,255,255,.18)!important;
+}
+.chart-footer span{
+  color:#B9C7CE!important;
+  font-size:9px!important;
+}
+.chart-footer strong{
+  color:#FFFFFF!important;
+  font-size:15px!important;
+}
+
+.donut-center span{color:#B1C0C7!important}
+.donut-legend span{color:#B8C5CB!important}
+.asin{color:#A5B4BC!important}
+th{color:#B1C0C8!important}
+td{color:#E0E7EA!important}
+.definition-grid p{color:#B2C0C7!important}
+footer{color:#94A6AF!important}
+
+/* Make all utility / annotation copy legible */
+.eyebrow,.dark-eyebrow,.kicker{font-weight:600!important}
+.panel-note,.request-help,.inventory-footnote{line-height:1.5!important}
+
+/* Real period controls */
+.window-switch{
+  flex:0 0 auto;
+  display:flex;
+  gap:5px;
+  align-items:center;
+}
+.period-switch button{
+  min-width:38px;
+  min-height:30px;
+  padding:6px 9px!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  background:#152C3B!important;
+  color:#AEBCC4!important;
+  border-radius:5px!important;
+  font:600 9px Montserrat,sans-serif!important;
+  cursor:pointer!important;
+  opacity:1!important;
+  transition:background .15s ease,border-color .15s ease,color .15s ease,transform .15s ease;
+}
+.period-switch button:hover{
+  color:#FFFFFF!important;
+  border-color:rgba(244,115,34,.65)!important;
+  background:#1B3545!important;
+}
+.period-switch button:focus-visible{
+  outline:2px solid #F47322;
+  outline-offset:2px;
+}
+.period-switch button.active{
+  color:#FFFFFF!important;
+  border-color:#F47322!important;
+  background:rgba(244,115,34,.14)!important;
+  box-shadow:inset 0 0 0 1px rgba(244,115,34,.12);
+}
+.period-switch button:active{transform:translateY(1px)}
+
+.section-heading.premium-heading{
+  align-items:flex-end!important;
+}
+.section-heading.premium-heading .orange-rule{
+  min-width:40px;
+}
+
+.chart-window-empty{
+  height:100%;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  color:#B3C1C8;
+  font-size:11px;
+  line-height:1.6;
+  padding:28px;
+}
+
+/* Slightly stronger chart grids without becoming noisy */
+.performance-chart line,
+.premium-chart line{
+  shape-rendering:geometricPrecision;
+}
+
+@media(max-width:760px){
+  .section-heading.premium-heading{
+    flex-wrap:wrap;
+  }
+  .section-heading.premium-heading .orange-rule{
+    order:3;
+    flex-basis:100%;
+  }
+  .window-switch{margin-left:auto}
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <img class="brand-logo" src="data:image/png;base64,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BwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABI/ABwAAAEDwCHwAAAAABO//B6NRGeOUydZmAAAAAElFTkSuQmCC" alt="Evolved Commerce">
+      <div class="header-actions">
+        <span class="portal-label">CLIENT PORTAL</span>
+        <a class="secondary-link" id="strategy-doc-link" href="#" target="_blank" rel="noopener noreferrer" hidden>View Strategy Doc</a>
+        <button class="orange-btn" id="request-work-btn">Request Work</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero-card">
+      <div class="hero-copy">
+        <span class="kicker">AMAZON PERFORMANCE</span>
+        <h1 id="client-name">Client Dashboard</h1>
+        <p id="hero-summary">Loading latest account data...</p>
+      </div>
+      <div class="hero-meta">
+        <span id="period-label">Loading...</span>
+        <strong id="updated-label">Loading latest data...</strong>
+      </div>
+      <div class="hero-orbit" aria-hidden="true"></div>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card featured">
+        <div class="kpi-card-header">
+          <span>Total Sales</span>
+          <div class="kpi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M15.5 8.5c-.8-.8-1.9-1.2-3.3-1.2-1.8 0-3 .8-3 2.1 0 1.4 1.2 1.9 3.1 2.3 1.9.4 3 .9 3 2.3 0 1.5-1.4 2.5-3.4 2.5-1.5 0-2.8-.5-3.7-1.4M12 5.5v13"/></svg>
+          </div>
+        </div>
+        <strong id="kpi-sales">—</strong>
+        <small id="sales-goal">—</small>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-card-header">
+          <span>Ad Sales</span>
+          <div class="kpi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 13h3l8 4V7l-8 4H4z"/><path d="M7 13v5h3"/><path d="M18 9c1 1 1 5 0 6"/></svg>
+          </div>
+        </div>
+        <strong id="kpi-ad-sales">—</strong>
+        <small>Amazon-attributed sales</small>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-card-header">
+          <span>Ad Spend</span>
+          <div class="kpi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="11" rx="2"/><path d="M7 7V5h10v2"/><path d="M15 12h3"/></svg>
+          </div>
+        </div>
+        <strong id="kpi-ad-spend">—</strong>
+        <small>Month to date</small>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-card-header">
+          <span>ROAS</span>
+          <div class="kpi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 16l5-5 3 3 6-7"/><path d="M15 7h4v4"/></svg>
+          </div>
+        </div>
+        <strong id="kpi-roas">—</strong>
+        <small id="roas-target">—</small>
+      </article>
+
+      <article class="kpi-card">
+        <div class="kpi-card-header">
+          <span>TACOS</span>
+          <div class="kpi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 108 8h-8z"/><path d="M14 4a6 6 0 016 6h-6z"/></svg>
+          </div>
+        </div>
+        <strong id="kpi-tacos">—</strong>
+        <small id="tacos-target">—</small>
+      </article>
+    </section>
+
+    <section class="metric-strip">
+      <div class="strip-item"><span>Projected Sales</span><strong id="strip-projected">—</strong><small id="strip-projected-note">—</small></div>
+      <div class="strip-item"><span>Sessions</span><strong id="strip-sessions">—</strong><small id="strip-sessions-note">—</small></div>
+      <div class="strip-item"><span>Conversion</span><strong id="strip-conversion">—</strong><small id="strip-conversion-note">—</small></div>
+      <div class="strip-item"><span>Inventory</span><strong id="strip-inventory">—</strong><small id="strip-inventory-note">—</small></div>
+    </section>
+
+    <section class="section-heading premium-heading">
+      <div>
+        <span class="kicker">PERFORMANCE</span>
+        <h2>Sales & Advertising</h2>
+      </div>
+      <div class="orange-rule"></div>
+      <div class="period-switch window-switch" data-window-switch="performance" aria-label="Sales and advertising lookback">
+        <button type="button" data-window="MTD" aria-pressed="false">MTD</button>
+        <button type="button" data-window="3M" aria-pressed="false">3M</button>
+        <button class="active" type="button" data-window="6M" aria-pressed="true">6M</button>
+        <button type="button" data-window="YTD" aria-pressed="false">YTD</button>
+      </div>
+    </section>
+
+    <section class="performance-chart-grid">
+      <article class="performance-panel">
+        <div class="performance-panel-heading">
+          <div>
+            <span class="eyebrow">TOTAL SALES</span>
+            <h3>Monthly Trend</h3>
+          </div>
+          <span class="panel-note">Completed months + current projection</span>
+        </div>
+        <div class="performance-chart" id="sales-chart"></div>
+      </article>
+
+      <article class="performance-panel">
+        <div class="performance-panel-heading">
+          <div>
+            <span class="eyebrow">TACOS</span>
+            <h3>Advertising Efficiency</h3>
+          </div>
+          <span class="panel-note" id="tacos-chart-target">Reference target</span>
+        </div>
+        <div class="performance-chart" id="tacos-chart"></div>
+      </article>
+    </section>
+
+    <section class="dark-analytics">
+      <div class="dark-heading">
+        <div class="dark-title-block">
+          <span class="kicker">GROWTH DRIVERS</span>
+          <h2>Traffic & Conversion</h2>
+          <p>Traffic brings shoppers to your product pages. Conversion turns those visits into orders.</p>
+        </div>
+        <div class="period-switch window-switch" data-window-switch="traffic" aria-label="Traffic and conversion lookback">
+          <button type="button" data-window="MTD" aria-pressed="false">MTD</button>
+          <button class="active" type="button" data-window="3M" aria-pressed="true">3M</button>
+          <button type="button" data-window="6M" aria-pressed="false">6M</button>
+          <button type="button" data-window="YTD" aria-pressed="false">YTD</button>
+        </div>
+      </div>
+
+      <div class="dark-chart-grid">
+        <article class="dark-chart-card">
+          <div class="chart-card-heading">
+            <div>
+              <span class="dark-eyebrow">TRAFFIC</span>
+              <h3>Sessions Trend</h3>
+            </div>
+            <div class="chart-stat">
+              <strong id="traffic-current">—</strong>
+              <span>Sessions</span>
+            </div>
+          </div>
+          <div class="premium-chart" id="traffic-chart"></div>
+          <div class="chart-footer">
+            <div><span>Projected</span><strong id="traffic-projected">—</strong></div>
+            <div><span>Target</span><strong id="traffic-target">—</strong></div>
+            <div><span>Latest week</span><strong id="traffic-latest">—</strong></div>
+          </div>
+        </article>
+
+        <article class="dark-chart-card">
+          <div class="chart-card-heading">
+            <div>
+              <span class="dark-eyebrow">CONVERSION</span>
+              <h3>Conversion Rate</h3>
+            </div>
+            <div class="chart-stat">
+              <strong id="conversion-current">—</strong>
+              <span>Current rate</span>
+            </div>
+          </div>
+          <div class="premium-chart" id="conversion-chart"></div>
+          <div class="chart-footer">
+            <div><span>Orders</span><strong id="conversion-orders">—</strong></div>
+            <div><span>Units</span><strong id="conversion-units">—</strong></div>
+            <div><span>Target</span><strong id="conversion-target">—</strong></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="lower-grid">
+      <article class="panel inventory-health">
+        <div class="panel-heading">
+          <div><span class="eyebrow">INVENTORY HEALTH</span><h3>Replenishment Snapshot</h3></div>
+          <button class="outline-btn" id="download-inventory">Download Refill List</button>
+        </div>
+
+        <div class="inventory-content">
+          <div class="donut-wrap">
+            <div class="inventory-donut" id="inventory-donut">
+              <div class="donut-center"><strong id="inventory-total">—</strong><span>Flagged</span></div>
+            </div>
+            <div class="donut-legend">
+              <div><i class="dot orange"></i><span>Out of stock</span><strong id="legend-oos">—</strong></div>
+              <div><i class="dot gold"></i><span>Order now</span><strong id="legend-order">—</strong></div>
+              <div><i class="dot slate"></i><span>Recommended units</span><strong id="legend-units">—</strong></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel refill-panel">
+        <div class="panel-heading">
+          <div><span class="eyebrow">TOP REFILL PRIORITIES</span><h3>Current Recommendations</h3></div>
+        </div>
+        <div class="refill-table-wrap">
+          <table>
+            <thead><tr><th>SKU / ASIN</th><th>Product</th><th>Status</th><th>Qty</th></tr></thead>
+            <tbody id="refill-table"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel compact-products">
+      <div class="panel-heading">
+        <div><span class="eyebrow">TOP PRODUCTS</span><h3>Month-to-Date Product Performance</h3></div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Product</th><th>Sales</th><th>Change</th><th>CVR</th></tr></thead>
+          <tbody id="product-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel definitions">
+      <details>
+        <summary>Metric definitions</summary>
+        <div class="definition-grid">
+          <div><strong>Total Sales</strong><p>All Amazon sales during the current reporting period.</p></div>
+          <div><strong>Ad Sales</strong><p>Sales Amazon attributes to advertising.</p></div>
+          <div><strong>Ad Spend</strong><p>Amount spent on Amazon advertising.</p></div>
+          <div><strong>ROAS</strong><p>Advertising sales generated for every $1 spent.</p></div>
+          <div><strong>TACOS</strong><p>Advertising spend divided by total sales.</p></div>
+          <div><strong>Conversion Rate</strong><p>The percentage of product-page sessions resulting in an order.</p></div>
+        </div>
+      </details>
+    </section>
+
+    <footer>
+      <span>Evolved Commerce</span>
+      <span>Evolve your Amazon business with us.</span>
+    </footer>
+  </main>
+
+  <dialog id="request-dialog" class="request-dialog">
+    <form id="request-form">
+      <div class="modal-header">
+        <div>
+          <span class="orange-kicker">CLIENT REQUEST</span>
+          <h2>Request Work</h2>
+          <p>Tell us what you need and we’ll route it to the right Evolved team member.</p>
+        </div>
+        <button type="button" class="icon-btn" id="close-dialog" aria-label="Close">×</button>
+      </div>
+
+      <div class="request-step">
+        <div class="request-step-label"><span>1</span> Request type</div>
+        <div class="request-type-grid" id="request-type-grid">
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="design" required>
+            <strong>Design</strong><small>Images, A+, storefront, creative</small>
+          </label>
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="copy" required>
+            <strong>Copy</strong><small>Listings, A+, keywords, content</small>
+          </label>
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="promotion" required>
+            <strong>Promotion</strong><small>Coupons, discounts, events</small>
+          </label>
+          <label class="request-type-card">
+            <input type="radio" name="request_type" value="new_product_upload" required>
+            <strong>New Product Upload</strong><small>Launch new catalog items</small>
+          </label>
+        </div>
+      </div>
+
+      <div id="request-core-fields" hidden>
+        <div class="request-step">
+          <div class="request-step-label"><span>2</span> Basics</div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="request-platform">Platform</label>
+              <select id="request-platform" name="platform" required>
+                <option value="">Choose platform...</option>
+                <option value="Amazon">Amazon</option>
+                <option value="Walmart">Walmart</option>
+                <option value="TikTok Shop">TikTok Shop</option>
+                <option value="Target Plus">Target Plus</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="desired-date">Desired completion date <span>(optional)</span></label>
+              <input id="desired-date" name="desired_date" type="date">
+            </div>
+          </div>
+          <div class="field">
+            <label for="request-summary">Request name</label>
+            <input id="request-summary" name="summary" maxlength="120" required placeholder="e.g. Launch new 20mm sailcloth colorways">
+          </div>
+          <div class="field">
+            <label for="request-products">Products / ASINs / SKUs <span>(if applicable)</span></label>
+            <textarea id="request-products" name="products" rows="2" placeholder="Paste ASINs, SKUs, product names, or a product family."></textarea>
+          </div>
+        </div>
+
+        <div class="request-step">
+          <div class="request-step-label"><span>3</span> Request details</div>
+          <div id="request-specific-fields"><div class="request-empty">Choose a request type and platform to see the information we need.</div></div>
+        </div>
+
+        <div class="request-step">
+          <div class="request-step-label"><span>4</span> Supporting information</div>
+          <div class="field">
+            <label for="source-link">Source files / Google Drive / product data link <span>(optional)</span></label>
+            <input id="source-link" name="source_link" type="url" placeholder="https://...">
+          </div>
+          <div class="field">
+            <label for="request-additional-context">Anything else we should know? <span>(optional)</span></label>
+            <textarea id="request-additional-context" name="additional_context" rows="3"></textarea>
+          </div>
+          <div class="field-grid">
+            <div class="field"><label for="requester-name">Your name</label><input id="requester-name" name="requester_name"></div>
+            <div class="field"><label for="requester-email">Your email</label><input id="requester-email" name="requester_email" type="email"></div>
+          </div>
+        </div>
+
+        <input type="hidden" name="client_slug" id="request-client-slug" value="anchorstrap">
+        <div class="modal-actions">
+          <span id="request-status"></span>
+          <button class="orange-btn" type="submit">Submit Request</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <script>window.__PREVIEW_DATA__={"schema_version": "1.0.0", "client": {"name": "Anchor Strap", "slug": "anchorstrap", "host": "anchorstrap.evolvedcommerce.com", "strategy_doc_url": "https://docs.google.com/spreadsheets/d/1ckDwmXgdOjxnVnVpndCUT1IrY-J8Hl6Y8O3nzeKSU0g/edit"}, "generated_at": "2026-08-31T15:19:26.485Z", "generated_at_local": "2026-08-31 09:19:26", "timezone": "America/Denver", "period_label": "August 2026", "data_through": {"sales": "2026-08-29", "ads": "2026-08-29"}, "kpis": {"total_sales": 31620.08, "projected_sales": 33800.78, "sessions": 28534, "orders": 887, "units": 889, "ad_impressions": 1135897, "ad_clicks": 11307, "ad_spend": 8973.48, "ad_sales": 21564.03, "ad_orders": 602, "roas": 2.4030844221, "tacos": 0.2837905533, "ctr": 0.0099542476, "ad_cvr": 0.0532413549, "cpc": 0.7936216503, "projected_sessions": 30501.86, "projected_spend": 9592.34, "conversion_rate": 0.0310857223}, "goals": {"monthly_sales": {"name": "Monthly Sales", "active": true, "target": 60000, "current": 31620.08, "projected": 33800.78, "status": "Off Track"}, "monthly_sessions": {"name": "Monthly Sessions", "active": true, "target": 30000, "current": 28534, "projected": 30501.86, "status": "On Track"}, "tacos": {"name": "TACOS", "active": true, "target": 0.4, "current": 0.2837905533, "projected": 0.2837905533, "status": "Achieved"}, "roas": {"name": "ROAS", "active": true, "target": 2.0, "current": 2.4030844221, "projected": 2.4030844221, "status": "Achieved"}, "conversion_rate": {"name": "Conversion Rate", "active": true, "target": 0.05, "current": 0.0310482054, "projected": 0.0310482054, "status": "Off Track"}}, "health": {"overall": "NEEDS_ATTENTION", "growth": "ACTION_NEEDED", "advertising": "HEALTHY", "conversion": "ACTION_NEEDED", "inventory": "ACTION_NEEDED", "data_freshness": "HEALTHY", "data_age_days": 2, "action_needed_count": 3, "watch_count": 0}, "summary": {"headline": "Account needs attention", "detail": "Advertising is healthy at 2.40x ROAS and 28.4% TACOS against the 2.00x ROAS target and 40.0% TACOS target. Projected sales are $33,801 against a $60,000 monthly goal. Conversion is 3.1% versus a 5.0% target. 28 products are currently flagged for inventory risk."}, "wins": ["Advertising efficiency is beating its current guardrails at 2.40x ROAS and 28.4% TACOS.", "Advertising has generated $21,564 in attributed sales on $8,973 in spend this month."], "focus": ["Close the projected monthly sales gap of $26,199 while protecting efficiency.", "Improve conversion from 3.1% toward the 5.0% target."], "watching": ["28 products are currently flagged for inventory risk, including 15 out of stock.", "Projected monthly sales are $33,801 versus the $60,000 target."], "top_products": [{"product": "Anchor Strap Co | 20mm Classic Sailcloth Watch Strap | Jet Black | Marine-Grade Outer + Caoutchouc Rubber Lining | Water-Resistant", "asin": "B0FMKRK1KN", "sales": 2399.52, "prior_sales": 2399.52, "sales_change": 0.0, "units": 49, "sessions": 1231, "conversion_rate": 0.039805}, {"product": "Anchor Strap Co | 20mm Classic Sailcloth Watch Strap | Black | Marine-Grade Outer + Caoutchouc Rubber Lining | Water-Resistant", "asin": "B0FMKQW3XG", "sales": 1749.65, "prior_sales": 1599.68, "sales_change": 0.09375, "units": 35, "sessions": 1429, "conversion_rate": 0.0244927}, {"product": "Anchor Strap Co | 20mm Ribbed Nylon Watch Strap | Navy Bond | Ridge Weave Band", "asin": "B0FNKFVY6V", "sales": 1653.0, "prior_sales": 1566.0, "sales_change": 0.0555556, "units": 57, "sessions": 1500, "conversion_rate": 0.038}, {"product": "Anchor Strap Co | Anchorflex Seahunter Watch Strap | Black | 20mm FKM Rubber Dive Band", "asin": "B0FW6PSQ7K", "sales": 1349.73, "prior_sales": 1249.75, "sales_change": 0.08, "units": 27, "sessions": 543, "conversion_rate": 0.0497238}, {"product": "Anchor Strap Co | 20mm Ribbed Nylon Watch Strap | NATO Style | Bond", "asin": "B0FNKFDKW1", "sales": 1131.0, "prior_sales": 1044.0, "sales_change": 0.0833333, "units": 39, "sessions": 1251, "conversion_rate": 0.0311751}], "monthly_trend": [{"year": 2026, "month": "January", "total_sales": 5187.0, "orders": 87, "units": 93, "aov": 59.62, "ad_spend": 261.0, "ad_sales": 383.0, "roas": 1.47, "tacos": 0.05, "impressions": 117667, "clicks": 450, "ctr": 0.004, "ad_cvr": 0.011}, {"year": 2026, "month": "February", "total_sales": 15061.0, "orders": 362, "units": 360, "aov": 41.6, "ad_spend": 1872.0, "ad_sales": 8021.0, "roas": 4.28, "tacos": 0.124, "impressions": 375083, "clicks": 2852, "ctr": 0.008, "ad_cvr": 0.031}, {"year": 2026, "month": "March", "total_sales": 41951.0, "orders": 1062, "units": 1064, "aov": 39.5, "ad_spend": 17155.0, "ad_sales": 33816.0, "roas": 1.97, "tacos": 0.409, "impressions": 2149766, "clicks": 15914, "ctr": 0.007, "ad_cvr": 0.053}, {"year": 2026, "month": "April", "total_sales": 47148.0, "orders": 1096, "units": 1101, "aov": 43.02, "ad_spend": 14474.0, "ad_sales": 35963.0, "roas": 2.48, "tacos": 0.307, "impressions": 2012726, "clicks": 14343, "ctr": 0.007, "ad_cvr": 0.059}, {"year": 2026, "month": "May", "total_sales": 44710.0, "orders": 875, "units": 877, "aov": 51.1, "ad_spend": 21136.0, "ad_sales": 33277.0, "roas": 1.57, "tacos": 0.473, "impressions": 2922837, "clicks": 16024, "ctr": 0.005, "ad_cvr": 0.04}, {"year": 2026, "month": "June", "total_sales": 45813.0, "orders": 1028, "units": 1032, "aov": 44.57, "ad_spend": 15678.0, "ad_sales": 32133.0, "roas": 2.05, "tacos": 0.342, "impressions": 2146478, "clicks": 12827, "ctr": 0.006, "ad_cvr": 0.058}, {"year": 2026, "month": "July", "total_sales": 36103.0, "orders": 919, "units": 922, "aov": 39.29, "ad_spend": 19297.0, "ad_sales": 26486.0, "roas": 1.37, "tacos": 0.534, "impressions": 2631150, "clicks": 16116, "ctr": 0.006, "ad_cvr": 0.042}], "inventory": {"risk_products": 28, "out_of_stock": 15, "order_now": 13, "critical_products": [{"status": "OUT OF STOCK", "asin": "B0FMKRF3ZG", "product": "22mm Classic Sailcloth Watch Strap - Navy", "recommended_units": 55}, {"status": "OUT OF STOCK", "asin": "B0FNKCDNLW", "product": "20mm Hybrid Nylon Watch Strap - Gray", "recommended_units": 50}, {"status": "OUT OF STOCK", "asin": "B0FNKHFQMS", "product": "20mm Hybrid Nylon Watch Strap - Desert", "recommended_units": 38}, {"status": "OUT OF STOCK", "asin": "B0FNKFL7C9", "product": "22mm Hybrid Nylon Watch Strap - Carbon", "recommended_units": 23}, {"status": "OUT OF STOCK", "asin": "B0FMKSRV3G", "product": "20mm Classic Sailcloth Watch Strap - Gray", "recommended_units": 20}], "replenishment_items": [{"status": "OUT OF STOCK", "recommended_units": 55, "asin": "B0FMKRF3ZG", "sku": "CS-NVY-QR-22-FBA", "fnsku": "B0FMKRF3ZG", "product": "22mm Classic Sailcloth Watch Strap - Navy", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 22, "sales_30d": 1049.79}, {"status": "OUT OF STOCK", "recommended_units": 50, "asin": "B0FNKCDNLW", "sku": "HN-GRY-20-FBA", "fnsku": "B0FNKCDNLW", "product": "20mm Hybrid Nylon Watch Strap - Gray", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 20, "sales_30d": 580.0}, {"status": "OUT OF STOCK", "recommended_units": 38, "asin": "B0FNKHFQMS", "sku": "HN-DST-20-FBA", "fnsku": "B0FNKHFQMS", "product": "20mm Hybrid Nylon Watch Strap - Desert", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 15, "sales_30d": 435.0}, {"status": "OUT OF STOCK", "recommended_units": 23, "asin": "B0FNKFL7C9", "sku": "HN-CBN-22-FBA", "fnsku": "B0FNKFL7C9", "product": "22mm Hybrid Nylon Watch Strap - Carbon", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 9, "sales_30d": 261.0}, {"status": "OUT OF STOCK", "recommended_units": 20, "asin": "B0FMKSRV3G", "sku": "CS-GRY-QR-20-FBA", "fnsku": "B0FMKSRV3G", "product": "20mm Classic Sailcloth Watch Strap - Gray", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 8, "sales_30d": 399.92}, {"status": "OUT OF STOCK", "recommended_units": 18, "asin": "B0FNKDY9MC", "sku": "RN-GR-22-FBA", "fnsku": "B0FNKDY9MC", "product": "22mm Ribbed Nylon Watch Strap - OD Green/Red", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 7, "sales_30d": 203.0}, {"status": "OUT OF STOCK", "recommended_units": 13, "asin": "B0FMKPPXKG", "sku": "CS-BLU-QR-20-FBA", "fnsku": "B0FMKPPXKG", "product": "20mm Classic Sailcloth Watch Strap - Deep Blue", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 5, "sales_30d": 249.95}, {"status": "OUT OF STOCK", "recommended_units": 13, "asin": "B0FNKFC71M", "sku": "HN-GRY-22-FBA", "fnsku": "B0FNKFC71M", "product": "22mm Hybrid Nylon Watch Strap - Gray", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 5, "sales_30d": 145.0}, {"status": "OUT OF STOCK", "recommended_units": 8, "asin": "B0FNKFPFYC", "sku": "RN-GFN-20-FBA", "fnsku": "B0FNKFPFYC", "product": "20mm Ribbed Nylon Watch Strap - Goldfinger", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 3, "sales_30d": 87.0}, {"status": "OUT OF STOCK", "recommended_units": 5, "asin": "B0FNK9Q3WF", "sku": "RN-NTD-20-FBA", "fnsku": "B0FNK9Q3WF", "product": "20mm Ribbed Nylon Watch Strap - NTTD", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 2, "sales_30d": 58.0}, {"status": "OUT OF STOCK", "recommended_units": 5, "asin": "B0FW726B39", "sku": "FKM-SHNT-NVY-20.FBA", "fnsku": "B0FW726B39", "product": "Anchorflex Seahunter Watch Strap - Navy 20mm", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 2, "sales_30d": 99.98}, {"status": "OUT OF STOCK", "recommended_units": 3, "asin": "B0FNKCKCCV", "sku": "RN-NTD-22-FBA", "fnsku": "B0FNKCKCCV", "product": "22mm Ribbed Nylon Watch Strap - NTTD", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 1, "sales_30d": 29.0}, {"status": "OUT OF STOCK", "recommended_units": 3, "asin": "B0FW73R2TS", "sku": "FKM-SHNT-GRN-20.FBA", "fnsku": "X004VZ46J7", "product": "Anchorflex Seahunter Watch Strap - Green 20mm", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 1, "sales_30d": 49.99}, {"status": "OUT OF STOCK", "recommended_units": 3, "asin": "B0FW6QSNQL", "sku": "FKM-SHNT-ORG-20.FBA", "fnsku": "X004VZ0G55", "product": "Anchorflex Seahunter Watch Strap - Orange 20mm", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 1, "sales_30d": 49.99}, {"status": "OUT OF STOCK", "recommended_units": 3, "asin": "B0FW6HJRD3", "sku": "FKM-SHNT-ORG-22.FBA", "fnsku": "X004VZ2BFN", "product": "Anchorflex Seahunter Watch Strap - Orange 22mm", "available": 0, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 1, "sales_30d": 49.99}, {"status": "ORDER NOW", "recommended_units": 80, "asin": "B0FNKFVY6V", "sku": "RN-NBD-20-FBA", "fnsku": "B0FNKFVY6V", "product": "20mm Ribbed Nylon Watch Strap - Navy Bond", "available": 59, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 57, "sales_30d": 1624.0}, {"status": "ORDER NOW", "recommended_units": 67, "asin": "B0FMKWSFVQ", "sku": "CS-BLU-QR-22-FBA", "fnsku": "B0FMKWSFVQ", "product": "22mm Classic Sailcloth Watch Strap - Deep Blue", "available": 18, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 34, "sales_30d": 1699.66}, {"status": "ORDER NOW", "recommended_units": 66, "asin": "B0FNKFDKW1", "sku": "RN-BND-20-FBA", "fnsku": "B0FNKFDKW1", "product": "20mm Ribbed Nylon Watch Strap - Bond", "available": 63, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 52, "sales_30d": 1508.0}, {"status": "ORDER NOW", "recommended_units": 32, "asin": "B0FNKD1VY9", "sku": "RN-MBL-22-FBA", "fnsku": "B0FNKD1VY9", "product": "22mm Ribbed Nylon Watch Strap - Marine Blue", "available": 1, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 13, "sales_30d": 377.0}, {"status": "ORDER NOW", "recommended_units": 20, "asin": "B0FWD82JF8", "sku": "FKM-HERT-BLK-22L.FBA", "fnsku": "X004VZ2GJJ", "product": "22mm AnchorFlex Heritage Watch Strap - Bathy Black", "available": 13, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 13, "sales_30d": 649.87}, {"status": "ORDER NOW", "recommended_units": 19, "asin": "B0FNKF17VH", "sku": "HN-CBN-20-FBA", "fnsku": "B0FNKF17VH", "product": "20mm Hybrid Nylon Watch Strap - Carbon", "available": 6, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 10, "sales_30d": 290.0}, {"status": "ORDER NOW", "recommended_units": 17, "asin": "B0FNKDWXM4", "sku": "RN-BO-20-FBA", "fnsku": "B0FNKDWXM4", "product": "20mm Ribbed Nylon Watch Strap - Black/Orange", "available": 1, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 7, "sales_30d": 203.0}, {"status": "ORDER NOW", "recommended_units": 17, "asin": "B0FWDB9HXR", "sku": "FKM-HERT-NVY-20L.FBA", "fnsku": "B0FWDB9HXR", "product": "20mm AnchorFlex Heritage Watch Strap - Navy Blue", "available": 21, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 15, "sales_30d": 749.85}, {"status": "ORDER NOW", "recommended_units": 17, "asin": "B0FNKFBPC4", "sku": "PN-NTD-22-FBA", "fnsku": "B0FNKFBPC4", "product": "22mm Premium Nylon Watch Strap - NTTD", "available": 6, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 9, "sales_30d": 261.0}, {"status": "ORDER NOW", "recommended_units": 13, "asin": "B0FNKGGXG2", "sku": "FKM-HERT-GRY-20L.FBA", "fnsku": "B0FNKGGXG2", "product": "20mm AnchorFlex Heritage Watch Strap - Battleship Gray", "available": 2, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 6, "sales_30d": 299.94}, {"status": "ORDER NOW", "recommended_units": 8, "asin": "B0FMGXMTQF", "sku": "RN-BLK-22-fba", "fnsku": "B0FMGXMTQF", "product": "22mm Ribbed Nylon Watch Strap - Black", "available": 2, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 4, "sales_30d": 116.0}, {"status": "ORDER NOW", "recommended_units": 5, "asin": "B0FNKFCQ72", "sku": "FKM-HERT-GRY-22L.FBA", "fnsku": "B0FNKFCQ72", "product": "22mm AnchorFlex Heritage Watch Strap - Battleship Gray", "available": 5, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 4, "sales_30d": 199.96}, {"status": "ORDER NOW", "recommended_units": 4, "asin": "B0FW7BBZR4", "sku": "FKM-SHNT-GRN-22.FBA", "fnsku": "X004VYYGCF", "product": "Anchorflex Seahunter Watch Strap - Green 22mm", "available": 4, "inbound_working": 0, "inbound_shipped": 0, "units_30d": 3, "sales_30d": 149.97}]}, "open_work": {"open_count": 144, "critical_count": 15, "high_count": 102}, "traffic_conversion": {"traffic": {"sessions": 28534, "projected_sessions": 30501.86, "target_sessions": 30000, "latest_week_sessions": 6289, "wow_change": -0.12446053181122096}, "conversion": {"rate": 0.0310857223, "target_rate": 0.05, "orders": 887, "units": 889, "latest_week_rate": 0.0391, "wow_pp_change": 0.005300000000000006}, "weekly": [{"week_start": "2026-01-04", "label": "Jan 4", "total_sales": 236, "sessions": 161, "conversion_rate": 0.0248, "orders": 4, "units": 4}, {"week_start": "2026-01-11", "label": "Jan 11", "total_sales": 2596, "sessions": 512, "conversion_rate": 0.0859, "orders": 44, "units": 44}, {"week_start": "2026-01-18", "label": "Jan 18", "total_sales": 1385, "sessions": 560, "conversion_rate": 0.0446, "orders": 25, "units": 25}, {"week_start": "2026-01-25", "label": "Jan 25", "total_sales": 911, "sessions": 1148, "conversion_rate": 0.0166, "orders": 19, "units": 19}, {"week_start": "2026-02-01", "label": "Feb 1", "total_sales": 1550, "sessions": 1311, "conversion_rate": 0.0305, "orders": 40, "units": 40}, {"week_start": "2026-02-08", "label": "Feb 8", "total_sales": 4040, "sessions": 1997, "conversion_rate": 0.0501, "orders": 100, "units": 100}, {"week_start": "2026-02-15", "label": "Feb 15", "total_sales": 3988, "sessions": 3062, "conversion_rate": 0.0307, "orders": 94, "units": 94}, {"week_start": "2026-02-22", "label": "Feb 22", "total_sales": 5425, "sessions": 3597, "conversion_rate": 0.035, "orders": 126, "units": 126}, {"week_start": "2026-03-01", "label": "Mar 1", "total_sales": 6103, "sessions": 3817, "conversion_rate": 0.0356, "orders": 136, "units": 137}, {"week_start": "2026-03-08", "label": "Mar 8", "total_sales": 9299, "sessions": 7341, "conversion_rate": 0.0287, "orders": 211, "units": 211}, {"week_start": "2026-03-15", "label": "Mar 15", "total_sales": 10863, "sessions": 9419, "conversion_rate": 0.0287, "orders": 270, "units": 270}, {"week_start": "2026-03-22", "label": "Mar 22", "total_sales": 10072.4, "sessions": 9782, "conversion_rate": 0.029, "orders": 284, "units": 285}, {"week_start": "2026-03-29", "label": "Mar 29", "total_sales": 11543.24, "sessions": 9566, "conversion_rate": 0.0316, "orders": 302, "units": 303}, {"week_start": "2026-04-05", "label": "Apr 5", "total_sales": 10737, "sessions": 7385, "conversion_rate": 0.0329, "orders": 243, "units": 244}, {"week_start": "2026-04-12", "label": "Apr 12", "total_sales": 11582, "sessions": 8168, "conversion_rate": 0.0332, "orders": 271, "units": 271}, {"week_start": "2026-04-19", "label": "Apr 19", "total_sales": 11109, "sessions": 8197, "conversion_rate": 0.032, "orders": 262, "units": 263}, {"week_start": "2026-04-26", "label": "Apr 26", "total_sales": 11084, "sessions": 7473, "conversion_rate": 0.0345, "orders": 258, "units": 260}, {"week_start": "2026-05-03", "label": "May 3", "total_sales": 10000, "sessions": 8751, "conversion_rate": 0.0262, "orders": 229, "units": 231}, {"week_start": "2026-05-10", "label": "May 10", "total_sales": 11434, "sessions": 10440, "conversion_rate": 0.0257, "orders": 268, "units": 268}, {"week_start": "2026-05-17", "label": "May 17", "total_sales": 8916, "sessions": 8151, "conversion_rate": 0.0253, "orders": 206, "units": 206}, {"week_start": "2026-05-24", "label": "May 24", "total_sales": 9093.52, "sessions": 8300, "conversion_rate": 0.027, "orders": 224, "units": 225}, {"week_start": "2026-05-31", "label": "May 31", "total_sales": 8107.79, "sessions": 8567, "conversion_rate": 0.0228, "orders": 195, "units": 196}, {"week_start": "2026-06-07", "label": "Jun 7", "total_sales": 9805.23, "sessions": 7417, "conversion_rate": 0.0283, "orders": 210, "units": 210}, {"week_start": "2026-06-14", "label": "Jun 14", "total_sales": 11127.07, "sessions": 7195, "conversion_rate": 0.0339, "orders": 244, "units": 247}, {"week_start": "2026-06-21", "label": "Jun 21", "total_sales": 13940.6, "sessions": 8184, "conversion_rate": 0.0379, "orders": 310, "units": 310}, {"week_start": "2026-06-28", "label": "Jun 28", "total_sales": 8581.73, "sessions": 7809, "conversion_rate": 0.0266, "orders": 208, "units": 208}, {"week_start": "2026-07-05", "label": "Jul 5", "total_sales": 8364.93, "sessions": 7586, "conversion_rate": 0.0279, "orders": 212, "units": 212}, {"week_start": "2026-07-12", "label": "Jul 12", "total_sales": 9639.82, "sessions": 9306, "conversion_rate": 0.0268, "orders": 249, "units": 249}, {"week_start": "2026-07-19", "label": "Jul 19", "total_sales": 9462.78, "sessions": 9622, "conversion_rate": 0.0248, "orders": 239, "units": 242}, {"week_start": "2026-07-26", "label": "Jul 26", "total_sales": 6533.25, "sessions": 7009, "conversion_rate": 0.0243, "orders": 170, "units": 171}, {"week_start": "2026-08-02", "label": "Aug 2", "total_sales": 5515.5, "sessions": 6150, "conversion_rate": 0.025, "orders": 154, "units": 154}, {"week_start": "2026-08-09", "label": "Aug 9", "total_sales": 6398.48, "sessions": 7014, "conversion_rate": 0.0262, "orders": 184, "units": 185}, {"week_start": "2026-08-16", "label": "Aug 16", "total_sales": 8631.19, "sessions": 7183, "conversion_rate": 0.0338, "orders": 243, "units": 243}, {"week_start": "2026-08-23", "label": "Aug 23", "total_sales": 8697.2, "sessions": 6289, "conversion_rate": 0.0391, "orders": 246, "units": 246}]}};</script><script>const $=id=>document.getElementById(id); let dashboard=null; let performanceWindow='6M'; let trafficWindow='3M';
+const fmtMoney=(n,compact=false)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0,notation:compact?'compact':'standard'}).format(Number(n||0));
+const fmtPct=(n,d=1)=>`${(Number(n||0)*100).toFixed(d)}%`;
+const fmtNum=n=>new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(Number(n||0));
+const fmtRoas=n=>`${Number(n||0).toFixed(2)}x`;
+function slugFromHost(){const h=location.hostname.toLowerCase(),p=h.split('.');if(h.endsWith('.evolvedcommerce.com')&&p.length>2)return p[0];return new URLSearchParams(location.search).get('client')||'anchorstrap'}
+async function loadDashboard(){if(window.__PREVIEW_DATA__){dashboard=window.__PREVIEW_DATA__;render(dashboard);return;}const slug=slugFromHost();let data=null;try{const r=await fetch(`/api/dashboard?slug=${encodeURIComponent(slug)}`);if(r.ok)data=await r.json()}catch(e){}if(!data){const r=await fetch(`/data/${slug}.json`);if(!r.ok)throw new Error(`No dashboard data found for ${slug}`);data=await r.json();data.__seed=true}dashboard=data;render(data)}
+function render(d){
+  $('client-name').textContent=d.client?.name||'Client Dashboard';
+  const strategyLink=$('strategy-doc-link');
+  if(d.client?.strategy_doc_url){strategyLink.href=d.client.strategy_doc_url;strategyLink.hidden=false}else{strategyLink.hidden=true}
+  $('period-label').textContent=d.period_label||'';
+  const through=d.data_through?.sales?new Date(d.data_through.sales+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
+  $('updated-label').textContent=(through?`Data through ${through}`:'')+(d.__seed?' · Prototype data':'');
+  $('hero-summary').textContent=neutralSummary(d);
+
+  const k=d.kpis||{},g=d.goals||{},inv=d.inventory||{};
+  $('kpi-sales').textContent=fmtMoney(k.total_sales);$('kpi-ad-sales').textContent=fmtMoney(k.ad_sales);$('kpi-ad-spend').textContent=fmtMoney(k.ad_spend);$('kpi-roas').textContent=fmtRoas(k.roas);$('kpi-tacos').textContent=fmtPct(k.tacos);
+  $('sales-goal').textContent=g.monthly_sales?.target?`Projected ${fmtMoney(k.projected_sales)} · Target ${fmtMoney(g.monthly_sales.target)}`:'Month to date';
+  $('roas-target').textContent=g.roas?.target?`Target ${fmtRoas(g.roas.target)}`:'';
+  $('tacos-target').textContent=g.tacos?.target?`Target ${fmtPct(g.tacos.target)}`:'';
+
+  $('strip-projected').textContent=fmtMoney(k.projected_sales);
+  $('strip-projected-note').textContent=g.monthly_sales?.target?`${fmtPct(k.projected_sales/g.monthly_sales.target,0)} of target`:'Current projection';
+  $('strip-sessions').textContent=fmtNum(k.sessions);
+  $('strip-sessions-note').textContent=g.monthly_sessions?.target?`Target ${fmtNum(g.monthly_sessions.target)}`:'Month to date';
+  $('strip-conversion').textContent=fmtPct(k.conversion_rate);
+  $('strip-conversion-note').textContent=g.conversion_rate?.target?`Target ${fmtPct(g.conversion_rate.target)}`:'Current month';
+  $('strip-inventory').textContent=`${fmtNum(inv.risk_products)} flagged`;
+  $('strip-inventory-note').textContent=`${fmtNum(inv.out_of_stock)} out of stock`;
+
+  renderPerformanceCharts(d);
+  renderTrafficConversion(d);
+  renderInventory(d);
+  renderProducts(d);
+  $('request-client-slug').value=d.client?.slug||'anchorstrap';
+}
+function neutralSummary(d){const k=d.kpis||{};return `${fmtMoney(k.total_sales)} in month-to-date sales across ${fmtNum(k.sessions)} sessions, with ${fmtMoney(k.ad_sales)} in Amazon-attributed ad sales.`}
+
+function dataThroughDate(d){
+  const raw=d?.data_through?.sales||d?.data_through?.traffic||'';
+  if(raw){
+    const parsed=new Date(`${String(raw).slice(0,10)}T12:00:00Z`);
+    if(!Number.isNaN(parsed.getTime()))return parsed;
+  }
+  return new Date();
+}
+const MONTH_INDEX={january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11};
+function completedMonths(d){
+  return [...(d.monthly_trend||[])].map(x=>{
+    const monthName=String(x.month||'').trim();
+    return {...x,_date:new Date(Date.UTC(Number(x.year||0),MONTH_INDEX[monthName.toLowerCase()]??0,1))};
+  }).filter(x=>Number.isFinite(x._date.getTime())).sort((a,b)=>a._date-b._date);
+}
+function currentMonthLabel(d,suffix=''){
+  return dataThroughDate(d).toLocaleDateString('en-US',{month:'short',timeZone:'UTC'})+suffix;
+}
+function performancePoints(d,metric){
+  const k=d.kpis||{},months=completedMonths(d),current=dataThroughDate(d);
+  if(performanceWindow==='MTD'){
+    if(metric==='sales'){
+      return [
+        {label:'MTD',value:Number(k.total_sales||0)},
+        {label:'Projected',value:Number(k.projected_sales||k.total_sales||0)}
+      ];
+    }
+    return [{label:'MTD',value:Number(k.tacos||0)}];
+  }
+
+  const currentPoint={
+    year:current.getUTCFullYear(),
+    month:current.toLocaleDateString('en-US',{month:'long',timeZone:'UTC'}),
+    _date:new Date(Date.UTC(current.getUTCFullYear(),current.getUTCMonth(),1)),
+    total_sales:Number(k.projected_sales||k.total_sales||0),
+    tacos:Number(k.tacos||0),
+    _current:true
+  };
+  let rows=[...months,currentPoint];
+
+  if(performanceWindow==='YTD'){
+    rows=rows.filter(x=>x._date.getUTCFullYear()===current.getUTCFullYear());
+  }else{
+    const count=performanceWindow==='3M'?3:6;
+    rows=rows.slice(-count);
+  }
+  return rows.map(x=>({
+    label:(x._current?currentMonthLabel(d,'*'):String(x.month||'').slice(0,3)),
+    value:Number(metric==='sales'?x.total_sales:x.tacos||0)
+  }));
+}
+function renderPerformanceCharts(d){
+  const target=d.goals?.tacos?.target;
+  const salesNote=$('sales-chart')?.closest('.performance-panel')?.querySelector('.panel-note');
+  if(salesNote){
+    salesNote.textContent=performanceWindow==='MTD'?'Current month + projection':'Completed months + current projection';
+  }
+  $('tacos-chart-target').textContent=target
+    ? (performanceWindow==='MTD'?`Current month · target ${fmtPct(target)}`:`Reference target ${fmtPct(target)}`)
+    : 'Current monthly trend';
+  drawSalesPerformance('sales-chart',performancePoints(d,'sales'));
+  drawTacosPerformance('tacos-chart',performancePoints(d,'tacos'),Number(target||0));
+}
+function drawSalesPerformance(id,points){
+  const el=$(id);
+  if(!points.length){el.innerHTML='<div class="chart-window-empty">No sales history is available for this lookback window.</div>';return}
+  const w=Math.max(600,Math.round(el.getBoundingClientRect().width||720));
+  const h=Math.max(280,Math.round(el.getBoundingClientRect().height||300));
+  const p={l:56,r:22,t:30,b:38};
+  const vals=points.map(x=>x.value);
+  let min=Math.min(...vals),max=Math.max(...vals);
+  const spread=Math.max(1,max-min);
+  min=Math.max(0,min-spread*.22);
+  max=max+spread*.22;
+  if(max===min)max=min+1;
+
+  const X=i=>points.length===1?(p.l+w-p.r)/2:p.l+i*(w-p.l-p.r)/(points.length-1);
+  const Y=v=>p.t+(max-v)*(h-p.t-p.b)/(max-min);
+  const c=points.map((x,i)=>[X(i),Y(x.value)]);
+  const line=c.map((a,i)=>(i?'L':'M')+a[0].toFixed(1)+','+a[1].toFixed(1)).join(' ');
+  const area=points.length>1?`M${c[0][0]},${h-p.b} `+c.map(a=>`L${a[0]},${a[1]}`).join(' ')+` L${c.at(-1)[0]},${h-p.b} Z`:'';
+
+  const grid=[0,.5,1].map(t=>{
+    const value=max-(max-min)*t,y=p.t+(h-p.t-p.b)*t;
+    return `<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="rgba(255,255,255,.12)"/>
+      <text x="${p.l-10}" y="${y+4}" text-anchor="end" class="light-axis">${fmtMoney(value,true)}</text>`;
+  }).join('');
+  const labels=points.map((x,i)=>`<text x="${X(i)}" y="${h-11}" text-anchor="middle" class="light-axis">${escapeHtml(x.label)}</text>`).join('');
+  const dots=c.map((a,i)=>`<circle cx="${a[0]}" cy="${a[1]}" r="4.3" fill="#fff" stroke="#F47322" stroke-width="2.4"><title>${escapeHtml(points[i].label)}: ${fmtMoney(points[i].value)}</title></circle>
+    <text x="${a[0]}" y="${Math.max(16,a[1]-13)}" text-anchor="middle" class="light-value">${fmtMoney(points[i].value,true)}</text>`).join('');
+
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}">
+    <defs>
+      <linearGradient id="salesLightFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F47322" stop-opacity=".34"/><stop offset="100%" stop-color="#F47322" stop-opacity=".035"/></linearGradient>
+      <filter id="salesLightGlow"><feGaussianBlur stdDeviation="3.2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    ${grid}${area?`<path d="${area}" fill="url(#salesLightFill)"/>`:''}
+    ${points.length>1?`<path d="${line}" fill="none" stroke="#FF7A1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#salesLightGlow)"/>`:''}
+    ${dots}${labels}
+  </svg>`;
+}
+function drawTacosPerformance(id,points,target){
+  const el=$(id);
+  if(!points.length){el.innerHTML='<div class="chart-window-empty">No advertising efficiency history is available for this lookback window.</div>';return}
+  const w=Math.max(520,Math.round(el.getBoundingClientRect().width||620));
+  const h=Math.max(280,Math.round(el.getBoundingClientRect().height||300));
+  const p={l:54,r:28,t:30,b:38};
+  const vals=points.map(x=>x.value);
+  const rawMax=Math.max(...vals,target||0);
+  const step=.20;
+  const yMax=Math.max(.60,Math.ceil(rawMax/step)*step);
+  const X=i=>points.length===1?(p.l+w-p.r)/2:p.l+i*(w-p.l-p.r)/(points.length-1);
+  const Y=v=>p.t+(yMax-v)*(h-p.t-p.b)/yMax;
+  const c=points.map((x,i)=>[X(i),Y(x.value)]);
+  const line=c.map((a,i)=>(i?'L':'M')+a[0].toFixed(1)+','+a[1].toFixed(1)).join(' ');
+  const area=points.length>1?`M${c[0][0]},${h-p.b} `+c.map(a=>`L${a[0]},${a[1]}`).join(' ')+` L${c.at(-1)[0]},${h-p.b} Z`:'';
+
+  const ticks=[];for(let v=0;v<=yMax+.0001;v+=step)ticks.push(Number(v.toFixed(4)));
+  const grid=ticks.map(v=>{const y=Y(v);return `<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="rgba(255,255,255,.12)"/><text x="${p.l-10}" y="${y+4}" text-anchor="end" class="light-axis">${Math.round(v*100)}%</text>`}).join('');
+  const labels=points.map((x,i)=>`<text x="${X(i)}" y="${h-11}" text-anchor="middle" class="light-axis">${escapeHtml(x.label)}</text>`).join('');
+  const dots=c.map((a,i)=>`<circle cx="${a[0]}" cy="${a[1]}" r="4.3" fill="#fff" stroke="#4E79FF" stroke-width="2.4"><title>${escapeHtml(points[i].label)}: ${fmtPct(points[i].value)}</title></circle><text x="${a[0]}" y="${Math.max(16,a[1]-13)}" text-anchor="middle" class="light-value">${Math.round(points[i].value*100)}%</text>`).join('');
+
+  let targetLine='';if(target>0){const y=Y(target);targetLine=`<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="#F47322" stroke-width="1.5" stroke-dasharray="6 5"/><text x="${w-p.r}" y="${y-8}" text-anchor="end" class="light-target">${Math.round(target*100)}% target</text>`}
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}">
+    <defs><linearGradient id="tacosLightFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4E79FF" stop-opacity=".28"/><stop offset="100%" stop-color="#4E79FF" stop-opacity=".03"/></linearGradient><filter id="tacosGlow"><feGaussianBlur stdDeviation="3.2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    ${grid}${targetLine}${area?`<path d="${area}" fill="url(#tacosLightFill)"/>`:''}
+    ${points.length>1?`<path d="${line}" fill="none" stroke="#4E79FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#tacosGlow)"/>`:''}
+    ${dots}${labels}
+  </svg>`;
+}
+
+function getTC(d){
+  const tc=d.traffic_conversion||{};
+  let weeks=tc.weekly_trend||tc.weekly||[];
+  if(!weeks.length&&d.weekly_trend)weeks=d.weekly_trend;
+  const mapped=weeks.map((w,i)=>({
+    week_start:w.week_start||w.date||'',
+    label:w.label||w.week||w.period||`W${i+1}`,
+    sessions:Number(w.sessions??w.traffic??0),
+    conversion:Number(w.conversion_rate??w.conversion??0),
+    orders:Number(w.orders||0),
+    units:Number(w.units||0),
+    total_sales:Number(w.total_sales||0)
+  })).filter(x=>x.sessions||x.conversion).sort((a,b)=>String(a.week_start).localeCompare(String(b.week_start)));
+  return {tc,weeks:mapped};
+}
+function trafficWeeksForWindow(d,weeks){
+  if(!weeks.length)return [];
+  const end=dataThroughDate(d);
+  let filtered=[];
+  if(trafficWindow==='MTD'){
+    filtered=weeks.filter(w=>{
+      const dt=new Date(`${w.week_start}T12:00:00Z`);
+      return !Number.isNaN(dt.getTime())&&dt.getUTCFullYear()===end.getUTCFullYear()&&dt.getUTCMonth()===end.getUTCMonth();
+    });
+  }else if(trafficWindow==='YTD'){
+    filtered=weeks.filter(w=>{
+      const dt=new Date(`${w.week_start}T12:00:00Z`);
+      return !Number.isNaN(dt.getTime())&&dt.getUTCFullYear()===end.getUTCFullYear();
+    });
+  }else{
+    const months=trafficWindow==='3M'?3:6;
+    const start=new Date(Date.UTC(end.getUTCFullYear(),end.getUTCMonth()-(months-1),1));
+    filtered=weeks.filter(w=>{
+      const dt=new Date(`${w.week_start}T12:00:00Z`);
+      return !Number.isNaN(dt.getTime())&&dt>=start&&dt<=end;
+    });
+  }
+  return filtered.length?filtered:weeks.slice(-8);
+}
+function renderTrafficConversion(d){
+  const k=d.kpis||{},g=d.goals||{},tcx=getTC(d),tc=tcx.tc,allWeeks=tcx.weeks,weeks=trafficWeeksForWindow(d,allWeeks);
+  $('traffic-current').textContent=fmtNum(k.sessions);
+  $('traffic-projected').textContent=fmtNum(tc.projected_sessions||k.projected_sessions||k.sessions);
+  $('traffic-target').textContent=g.monthly_sessions?.target?fmtNum(g.monthly_sessions.target):'—';
+  $('traffic-latest').textContent=allWeeks.length?fmtNum(allWeeks.at(-1).sessions):'—';
+  $('conversion-current').textContent=fmtPct(k.conversion_rate);
+  $('conversion-orders').textContent=fmtNum(tc.orders||k.orders||0);
+  $('conversion-units').textContent=fmtNum(tc.units||k.units||0);
+  $('conversion-target').textContent=g.conversion_rate?.target?fmtPct(g.conversion_rate.target):'—';
+  drawPremiumTraffic('traffic-chart',weeks);
+  drawPremiumConversion('conversion-chart',weeks,Number(g.conversion_rate?.target||0));
+}
+function chartLabelStep(count){return Math.max(1,Math.ceil(count/8))}
+function drawPremiumTraffic(id,weeks){
+  const el=$(id);if(!weeks.length){el.innerHTML='<div class="chart-window-empty">No traffic history is available for this lookback window.</div>';return}
+  const w=Math.max(520,Math.round(el.getBoundingClientRect().width||600)),h=Math.max(250,Math.round(el.getBoundingClientRect().height||260)),p={l:50,r:18,t:24,b:34};
+  const vals=weeks.map(x=>x.sessions),max=Math.max(...vals)*1.18,min=0,step=chartLabelStep(weeks.length);
+  const X=i=>weeks.length===1?(p.l+w-p.r)/2:p.l+i*(w-p.l-p.r)/(weeks.length-1),Y=v=>p.t+(max-v)*(h-p.t-p.b)/(max-min||1);
+  const c=weeks.map((x,i)=>[X(i),Y(x.sessions)]);
+  const line=c.map((a,i)=>(i?'L':'M')+a[0].toFixed(1)+','+a[1].toFixed(1)).join(' ');
+  const area=weeks.length>1?`M${c[0][0]},${h-p.b} `+c.map(a=>`L${a[0]},${a[1]}`).join(' ')+` L${c.at(-1)[0]},${h-p.b} Z`:'';
+  const grid=[0,.5,1].map(t=>{const v=max*(1-t),y=p.t+(h-p.t-p.b)*t;return `<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="rgba(255,255,255,.12)"/><text x="${p.l-10}" y="${y+4}" text-anchor="end" class="dark-axis">${fmtNum(v)}</text>`}).join('');
+  const labels=weeks.map((x,i)=>(i%step===0||i===weeks.length-1)?`<text x="${X(i)}" y="${h-10}" text-anchor="middle" class="dark-axis">${escapeHtml(shortLabel(x.label))}</text>`:'').join('');
+  const dots=c.map((a,i)=>{const show=i%step===0||i===weeks.length-1;return `<circle cx="${a[0]}" cy="${a[1]}" r="${weeks.length>18?3.2:4.3}" fill="#fff" stroke="#F47322" stroke-width="2.3"><title>${escapeHtml(weeks[i].label)}: ${fmtNum(weeks[i].sessions)} sessions</title></circle>${show?`<text x="${a[0]}" y="${Math.max(16,a[1]-12)}" text-anchor="middle" class="dark-value">${fmtNum(weeks[i].sessions)}</text>`:''}`}).join('');
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}"><defs><linearGradient id="trafficFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F47322" stop-opacity=".38"/><stop offset="100%" stop-color="#F47322" stop-opacity="0"/></linearGradient><filter id="trafficGlow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><style>.dark-axis{fill:#B8C5CB;font:300 10px Montserrat}.dark-value{fill:#fff;font:600 10px Montserrat;paint-order:stroke;stroke:#102333;stroke-width:3px}</style>${grid}${area?`<path d="${area}" fill="url(#trafficFill)"/>`:''}${weeks.length>1?`<path d="${line}" fill="none" stroke="#F47322" stroke-width="3" filter="url(#trafficGlow)" stroke-linecap="round" stroke-linejoin="round"/>`:''}${dots}${labels}</svg>`
+}
+function drawPremiumConversion(id,weeks,target){
+  const el=$(id);if(!weeks.length){el.innerHTML='<div class="chart-window-empty">No conversion history is available for this lookback window.</div>';return}
+  const w=Math.max(520,Math.round(el.getBoundingClientRect().width||600)),h=Math.max(250,Math.round(el.getBoundingClientRect().height||260)),p={l:50,r:18,t:24,b:34};
+  const vals=weeks.map(x=>x.conversion),max=Math.max(.06,Math.max(...vals,target||0)*1.18),min=0,step=chartLabelStep(weeks.length);
+  const X=i=>weeks.length===1?(p.l+w-p.r)/2:p.l+i*(w-p.l-p.r)/(weeks.length-1),Y=v=>p.t+(max-v)*(h-p.t-p.b)/(max-min||1);
+  const c=weeks.map((x,i)=>[X(i),Y(x.conversion)]);
+  const line=c.map((a,i)=>(i?'L':'M')+a[0].toFixed(1)+','+a[1].toFixed(1)).join(' ');
+  const area=weeks.length>1?`M${c[0][0]},${h-p.b} `+c.map(a=>`L${a[0]},${a[1]}`).join(' ')+` L${c.at(-1)[0]},${h-p.b} Z`:'';
+  const ticks=[0,.02,.04,.06].filter(v=>v<=max+.001);
+  const grid=ticks.map(v=>{const y=Y(v);return `<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="rgba(255,255,255,.12)"/><text x="${p.l-10}" y="${y+4}" text-anchor="end" class="dark-axis">${Math.round(v*100)}%</text>`}).join('');
+  const labels=weeks.map((x,i)=>(i%step===0||i===weeks.length-1)?`<text x="${X(i)}" y="${h-10}" text-anchor="middle" class="dark-axis">${escapeHtml(shortLabel(x.label))}</text>`:'').join('');
+  const dots=c.map((a,i)=>{const show=i%step===0||i===weeks.length-1;return `<circle cx="${a[0]}" cy="${a[1]}" r="${weeks.length>18?3.2:4.3}" fill="#fff" stroke="#4B7CF3" stroke-width="2.3"><title>${escapeHtml(weeks[i].label)}: ${fmtPct(weeks[i].conversion)}</title></circle>${show?`<text x="${a[0]}" y="${Math.max(16,a[1]-12)}" text-anchor="middle" class="dark-value">${fmtPct(weeks[i].conversion)}</text>`:''}`}).join('');
+  let targetLine='';if(target>0){const y=Y(target);targetLine=`<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="#F47322" stroke-width="1.4" stroke-dasharray="5 5"/><text x="${w-p.r}" y="${y-7}" text-anchor="end" class="target-label">Target ${fmtPct(target)}</text>`}
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}"><defs><linearGradient id="convFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4B7CF3" stop-opacity=".42"/><stop offset="100%" stop-color="#4B7CF3" stop-opacity="0"/></linearGradient><filter id="convGlow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><style>.dark-axis{fill:#B8C5CB;font:300 10px Montserrat}.dark-value{fill:#fff;font:600 10px Montserrat;paint-order:stroke;stroke:#102333;stroke-width:3px}.target-label{fill:#FF8A3D;font:600 9px Montserrat}</style>${grid}${targetLine}${area?`<path d="${area}" fill="url(#convFill)"/>`:''}${weeks.length>1?`<path d="${line}" fill="none" stroke="#4B7CF3" stroke-width="3" filter="url(#convGlow)" stroke-linecap="round" stroke-linejoin="round"/>`:''}${dots}${labels}</svg>`
+}
+function shortLabel(v=''){const s=String(v);return s.length>10?s.slice(0,10):s}
+
+function renderInventory(d){
+  const inv=d.inventory||{},items=getReplenishmentItems(inv),units=items.reduce((s,x)=>s+Number(x.recommended_units||0),0);
+  $('inventory-total').textContent=fmtNum(inv.risk_products||items.length);
+  $('legend-oos').textContent=fmtNum(inv.out_of_stock);
+  $('legend-order').textContent=fmtNum(inv.order_now);
+  $('legend-units').textContent=fmtNum(units);
+
+  const total=Math.max(1,Number(inv.risk_products||items.length||1)),oos=Number(inv.out_of_stock||0),ord=Number(inv.order_now||0),rest=Math.max(0,total-oos-ord);
+  const oosPct=oos/total*100,ordPct=ord/total*100;
+  $('inventory-donut').style.background=`conic-gradient(#F47322 0 ${oosPct}%,#FDBA31 ${oosPct}% ${oosPct+ordPct}%,#415A68 ${oosPct+ordPct}% 100%)`;
+
+  $('refill-table').innerHTML=items.slice(0,5).map(x=>`<tr>
+    <td><strong>${escapeHtml(x.sku||'—')}</strong><span class="asin">${escapeHtml(x.asin||'')}</span></td>
+    <td>${escapeHtml(prettyName(x.product))}</td>
+    <td><span class="status-pill ${String(x.status).includes('ORDER')?'order':''}">${escapeHtml(x.status||'')}</span></td>
+    <td>${fmtNum(x.recommended_units)}</td>
+  </tr>`).join('');
+}
+function getReplenishmentItems(inv){if(Array.isArray(inv.replenishment_items))return inv.replenishment_items;return (inv.critical_products||[]).map(x=>({...x,sku:'',fnsku:'',available:'',inbound_working:'',inbound_shipped:''}))}
+function renderProducts(d){$('product-table').innerHTML=(d.top_products||[]).map(p=>{const t=Number(p.sales_change||0),sign=t>0?'+':'';return `<tr><td><span class="product-name">${escapeHtml(prettyName(p.product))}</span><span class="asin">${escapeHtml(p.asin||'')}</span></td><td>${fmtMoney(p.sales)}</td><td class="change">${sign}${(t*100).toFixed(1)}%</td><td>${fmtPct(p.conversion_rate)}</td></tr>`}).join('')}
+function downloadInventoryCsv(){if(!dashboard)return;const items=getReplenishmentItems(dashboard.inventory||{});if(!items.length){alert('No replenishment recommendations are available in the current dashboard data.');return}const headers=['Status','Recommended Qty','ASIN','Merchant SKU','FNSKU','Product Name','Available','Inbound - Working','Inbound - Shipped','Units 30D','Sales 30D'];const rows=items.map(x=>[x.status,x.recommended_units,x.asin,x.sku,x.fnsku,x.product,x.available,x.inbound_working,x.inbound_shipped,x.units_30d,x.sales_30d]);const csv=[headers,...rows].map(r=>r.map(csvCell).join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);const date=(dashboard.data_through?.sales||new Date().toISOString().slice(0,10)).slice(0,10);a.download=`${dashboard.client?.slug||'client'}-inventory-replenishment-${date}.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function csvCell(v){const s=String(v??'');return `"${s.replaceAll('"','""')}"`}
+function prettyName(v=''){let s=String(v).replace('Anchor Strap Co | ','').replaceAll(' | ',' · ');if(s.length>72)s=s.slice(0,69).trim()+'…';return s}
+function escapeHtml(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+/* Request center logic retained */
+const dialog=$('request-dialog'),requestForm=$('request-form'),requestCore=$('request-core-fields'),requestPlatform=$('request-platform'),requestSpecific=$('request-specific-fields');let selectedRequestType='';
+const PLATFORM_HELP={'Amazon':'Amazon requirements vary by Product Type. We collect the core data here, then validate category-specific attributes against the current Amazon product-type requirements before upload.','Walmart':'Walmart requirements vary by Product Type and fulfillment method. We collect the core item/offer data here, then validate the item against Walmart’s current product-type spec.','TikTok Shop':'TikTok Shop listings require complete PDP content and may require category-specific attributes, approvals, warnings, or certifications.','Target Plus':'Target Plus is curated and item requirements vary by approved assortment/category. We collect the common item data here plus Target-specific compliance and content inputs.'};
+const PRODUCT_TEMPLATES={'Amazon':['seller_sku','product_type','brand','product_name','gtin_upc_ean','price','inventory_qty','variation_theme','parent_sku','color','size','material','country_of_origin','package_length','package_width','package_height','package_weight','main_image_url','additional_image_urls','title_copy','bullet_1','bullet_2','bullet_3','bullet_4','bullet_5','description','backend_search_terms','compliance_notes'],'Walmart':['seller_sku','product_type','gtin_upc_ean','brand','product_name','short_description','key_feature_1','key_feature_2','price','inventory_qty','country_of_origin','package_length','package_width','package_height','package_weight','main_image_url','additional_image_urls','variant_group_id','color','size','condition','compliance_notes'],'TikTok Shop':['seller_sku','category','brand','product_name','description','price','inventory_qty','variation_1_name','variation_1_value','main_image_url','additional_image_urls','video_url','package_length','package_width','package_height','package_weight','material','country_of_origin','compliance_notes'],'Target Plus':['seller_sku','target_item_type','gs1_upc_gtin','brand','product_title','description','bullet_feature_1','bullet_feature_2','price','inventory_qty','color','size','material','country_of_origin','package_length','package_width','package_height','package_weight','main_image_url','additional_image_urls','compliance_notes']};
+function field(name,label,type='text',opts={}){const req=opts.required?' required':'',ph=opts.placeholder?` placeholder="${escapeHtml(opts.placeholder)}"`:'',help=opts.help?`<div class="request-help">${escapeHtml(opts.help)}</div>`:'',tag=opts.required?'<span class="required-tag">REQUIRED</span>':'';if(type==='textarea')return `<div class="field"><label>${label}${tag}</label><textarea name="${name}" rows="${opts.rows||3}"${req}${ph}></textarea>${help}</div>`;if(type==='select'){const options=(opts.options||[]).map(o=>`<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');return `<div class="field"><label>${label}${tag}</label><select name="${name}"${req}><option value="">Choose...</option>${options}</select>${help}</div>`}return `<div class="field"><label>${label}${tag}</label><input name="${name}" type="${type}"${req}${ph}>${help}</div>`}
+function checkbox(name,label,value='Yes'){return `<label class="check-option"><input type="checkbox" name="${name}" value="${escapeHtml(value)}"><span>${label}</span></label>`}
+function renderRequestFields(){if(!selectedRequestType){requestSpecific.innerHTML='<div class="request-empty">Choose a request type.</div>';return}const platform=requestPlatform.value;if(selectedRequestType==='new_product_upload'&&!platform){requestSpecific.innerHTML='<div class="request-empty">Choose a platform above to load the product setup checklist.</div>';return}const renders={design:designFields,copy:copyFields,promotion:promotionFields,new_product_upload:newProductFields};requestSpecific.innerHTML=renders[selectedRequestType](platform);requestSpecific.querySelectorAll('[data-template-platform]').forEach(btn=>btn.addEventListener('click',()=>downloadProductTemplate(btn.dataset.templatePlatform)))}
+function designFields(platform){return `<div class="request-section"><div class="request-section-title">Creative deliverable</div><div class="field-grid">${field('design_deliverable','Deliverable','select',{required:true,options:['Main image','Secondary image set','A+ / Enhanced content','Brand Story','Storefront','Infographic','Lifestyle creative','Video / storyboard','Other']})}${field('design_quantity','Number of assets / concepts','number',{placeholder:'e.g. 6'})}</div>${field('design_objective','What should this creative communicate?','textarea',{required:true,rows:3})}<div class="field-grid">${field('design_asset_link','Product photos / source asset folder','url',{placeholder:'https://...'})}${field('design_reference_link','Reference / inspiration link','url',{placeholder:'https://...'})}</div>${field('design_required_copy','Required text, claims, or callouts','textarea',{rows:2})}${field('design_constraints','Brand / legal / compliance constraints','textarea',{rows:2})}<div class="request-requirement-note">${platform?`We’ll size and format the final assets for ${escapeHtml(platform)}.`:'Choose a platform above so we can format the deliverable correctly.'}</div></div>`}
+function copyFields(platform){return `<div class="request-section"><div class="request-section-title">Copy scope</div><div class="check-grid">${checkbox('copy_scope','Full listing')}${checkbox('copy_title','Title')}${checkbox('copy_bullets','Bullets / highlights')}${checkbox('copy_description','Description')}${checkbox('copy_backend','Backend keywords / search terms')}${checkbox('copy_aplus','A+ / enhanced content')}${checkbox('copy_storefront','Storefront')}${checkbox('copy_other','Other')}</div><div class="field-grid">${field('copy_existing_listing','Existing listing URL','url')}${field('copy_keyword_research','Keyword / research file','url')}</div>${field('copy_product_facts','Product facts, features, materials, ingredients, dimensions, or differentiators','textarea',{required:true,rows:4})}${field('copy_required_claims','Required claims / approved language','textarea',{rows:2})}${field('copy_prohibited_claims','Claims or wording to avoid','textarea',{rows:2})}<div class="request-requirement-note">${platform?`We’ll write to current ${escapeHtml(platform)} content requirements and the appropriate product category.`:'Choose a platform above so we can apply the correct content rules.'}</div></div>`}
+function promotionFields(platform){const promoOptions={'Amazon':['Coupon','Price Discount','Prime Exclusive Discount','Deal / Event submission','Promotion code','Other'],'Walmart':['Price promotion','Rollback / event pricing','Sponsored promotion support','Other'],'TikTok Shop':['Product discount','Seller coupon','Flash deal / campaign','Creator / affiliate promotion','Other'],'Target Plus':['Price promotion','Event / seasonal promotion','Other'],'Other':['Discount','Coupon','Event promotion','Other']}[platform||'Other'];return `<div class="request-section"><div class="request-section-title">Promotion setup</div><div class="field-grid">${field('promotion_type','Promotion type','select',{required:true,options:promoOptions})}${field('promotion_goal','Goal','select',{options:['Drive sales volume','Launch support','Inventory sell-through','Seasonal event','Conversion support','Other']})}</div><div class="field-grid">${field('promotion_start','Start date','date',{required:true})}${field('promotion_end','End date','date',{required:true})}</div><div class="field-grid three">${field('promotion_discount','Discount / target price','text',{required:true})}${field('promotion_budget','Budget / funding cap','text')}${field('promotion_inventory','Available inventory','number')}</div>${field('promotion_guardrails','Pricing / margin / participation guardrails','textarea',{rows:2})}</div>`}
+function newProductFields(platform){const helper=PLATFORM_HELP[platform]||'';return `<div class="request-requirement-note">${escapeHtml(helper)}</div><div class="template-row"><div><strong>Multiple SKUs or variations?</strong><small>Download a ${escapeHtml(platform)} starter template and send us the completed sheet.</small></div><button type="button" class="template-btn" data-template-platform="${escapeHtml(platform)}">Download CSV Template</button></div><div class="request-section"><div class="request-section-title">Product structure</div><div class="field-grid">${field('upload_structure','Launch structure','select',{required:true,options:['Single standalone SKU','Parent with variations','Multiple standalone SKUs','Existing catalog item / new offer']})}${field('product_category','Category / product type','text',{required:true})}</div>${field('bulk_product_sheet','Completed product / variation data sheet','url')}</div><div class="request-section"><div class="request-section-title">Core product identity</div><div class="field-grid">${field('brand','Brand','text',{required:true})}${field('product_name','Product name / working title','text',{required:true})}${field('seller_sku','Seller SKU','text',{required:true})}${field('gtin','UPC / GTIN / EAN','text')}${field('manufacturer','Manufacturer','text')}${field('model_mpn','Model / MPN','text')}</div></div><div class="request-section"><div class="request-section-title">Commerce & fulfillment</div><div class="field-grid three">${field('price','Selling price','text',{required:true})}${field('msrp','MSRP / list price','text')}${field('inventory_qty','Launch inventory quantity','number',{required:true})}</div><div class="field-grid">${field('fulfillment_method','Fulfillment method','select',{required:true,options:fulfillmentOptions(platform)})}${field('country_of_origin','Country of origin','text',{required:true})}</div><div class="field-grid four">${field('item_dimensions','Item dimensions','text')}${field('item_weight','Item weight','text')}${field('package_dimensions','Package dimensions','text',{required:true})}${field('package_weight','Package weight','text',{required:true})}</div></div><div class="request-section"><div class="request-section-title">Content & assets</div>${field('product_facts','Product facts / features / specifications','textarea',{required:true,rows:4})}<div class="field-grid">${field('copy_status','Listing copy','select',{required:true,options:['Evolved should write the listing','Final copy is provided','Existing listing copy can be adapted']})}${field('image_asset_link','Image / video asset folder','url',{required:true})}</div>${field('variation_details','Variation details','textarea',{rows:3})}</div><div class="request-section"><div class="request-section-title">${escapeHtml(platform)}-specific information</div>${platformSpecificProductFields(platform)}</div><div class="request-section"><div class="request-section-title">Compliance & restrictions</div><div class="check-grid">${checkbox('contains_battery','Contains batteries')}${checkbox('chemical_or_aerosol','Chemical / aerosol')}${checkbox('pesticide','Pesticide / treated article')}${checkbox('prop65','California Prop 65 applies')}${checkbox('childrens_product','Children’s product / choking warning may apply')}${checkbox('wearable','Wearable item / size chart applies')}</div>${field('compliance_docs','Compliance / certification documents','url')}${field('warnings_claims','Required warnings, regulated claims, or compliance notes','textarea',{rows:3})}</div>`}
+function fulfillmentOptions(platform){return {'Amazon':['FBA','FBM / Seller Fulfilled','Not sure'],'Walmart':['WFS','Seller Fulfilled','Not sure'],'TikTok Shop':['Seller Shipping','Platform fulfillment / FBT if enrolled','Not sure'],'Target Plus':['Seller Fulfilled','Not sure'],'Other':['Seller Fulfilled','Platform Fulfilled','Not sure']}[platform]||['Seller Fulfilled','Platform Fulfilled','Not sure']}
+function platformSpecificProductFields(platform){if(platform==='Amazon')return `<div class="field-grid">${field('amazon_product_type','Amazon Product Type','text',{required:true})}${field('amazon_variation_theme','Variation theme','text')}${field('amazon_condition','Condition','select',{required:true,options:['New','Used - Like New','Used - Very Good','Used - Good','Other']})}${field('amazon_marketplace','Marketplace','select',{required:true,options:['US','Canada','Mexico','Other']})}</div>`;if(platform==='Walmart')return `<div class="field-grid">${field('walmart_product_type','Walmart Product Type','text',{required:true})}${field('walmart_fulfillment_center','Fulfillment center ID','text')}${field('walmart_condition','Condition','select',{required:true,options:['New','Pre-Owned','Restored','Other']})}${field('walmart_warranty','Warranty URL / warranty text','text')}</div>`;if(platform==='TikTok Shop')return `<div class="field-grid">${field('tiktok_category','TikTok Shop category','text',{required:true})}${field('tiktok_video_url','Product video URL','url')}${field('tiktok_material','Material / ingredients','text')}${field('tiktok_specifications','Key specifications','text')}</div>`;if(platform==='Target Plus')return `<div class="field-grid">${field('target_item_type','Target Plus item type','text',{required:true})}${field('target_gs1_upc','GS1-certified UPC / GTIN','text',{required:true})}${field('target_assortment_notes','Approved assortment / category notes','text')}${field('target_wercs','UL WERCSmart registration / reference','text')}</div>`;return field('platform_specific_notes','Platform-specific listing requirements','textarea',{rows:3})}
+function downloadProductTemplate(platform){const headers=PRODUCT_TEMPLATES[platform]||['seller_sku','product_name','brand','category','gtin_upc_ean','price','inventory_qty','image_urls','product_facts','compliance_notes'];const csv=[headers,headers.map((h,i)=>i===0?'REPLACE THIS ROW WITH PRODUCT DATA':'')].map(row=>row.map(csvCell).join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${platform.toLowerCase().replaceAll(' ','-')}-new-product-upload-template.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function humanLabel(name){return name.replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase())}
+function buildStructuredDescription(fd){const skip=new Set(['request_type','summary','client_slug','requester_name','requester_email','desired_date']);const lines=[`Platform: ${fd.get('platform')||''}`];const products=fd.get('products');if(products)lines.push(`Products / ASINs / SKUs: ${products}`);for(const [key,value] of fd.entries()){if(skip.has(key)||key==='platform'||key==='products'||!String(value).trim())continue;lines.push(`${humanLabel(key)}: ${value}`)}return lines.join('\n')}
+
+$('request-work-btn').addEventListener('click',()=>dialog.showModal());
+$('close-dialog').addEventListener('click',()=>dialog.close());
+$('download-inventory').addEventListener('click',downloadInventoryCsv);
+document.querySelectorAll('input[name="request_type"]').forEach(r=>r.addEventListener('change',e=>{selectedRequestType=e.target.value;requestCore.hidden=false;renderRequestFields()}));
+requestPlatform.addEventListener('change',renderRequestFields);
+requestForm.addEventListener('submit',async e=>{e.preventDefault();const status=$('request-status'),fd=new FormData(requestForm);if(!selectedRequestType){status.textContent='Choose a request type.';return}if(!requestForm.reportValidity())return;const payload=Object.fromEntries(fd.entries());payload.request_type=selectedRequestType;payload.description=buildStructuredDescription(fd);status.textContent='Submitting…';try{const r=await fetch('/api/work-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}),result=await r.json().catch(()=>({}));if(!r.ok)throw new Error(result.error||'Request service is not configured yet.');status.textContent=result.clickup_task_id?'Submitted to the Evolved team ✓':'Request saved ✓';setTimeout(()=>{dialog.close();requestForm.reset();selectedRequestType='';requestCore.hidden=true;requestSpecific.innerHTML='';status.textContent=''},1400)}catch(err){const existing=JSON.parse(localStorage.getItem('evolved_prototype_requests')||'[]');existing.push({...payload,created_at:new Date().toISOString()});localStorage.setItem('evolved_prototype_requests',JSON.stringify(existing));status.textContent='Prototype saved locally — ClickUp turns on next.'}});
+
+
+document.querySelectorAll('[data-window-switch]').forEach(group=>{
+  group.querySelectorAll('button[data-window]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const windowValue=button.dataset.window;
+      const groupName=group.dataset.windowSwitch;
+      group.querySelectorAll('button[data-window]').forEach(b=>{
+        const active=b===button;
+        b.classList.toggle('active',active);
+        b.setAttribute('aria-pressed',active?'true':'false');
+      });
+      if(groupName==='performance'){
+        performanceWindow=windowValue;
+        if(dashboard)renderPerformanceCharts(dashboard);
+      }else if(groupName==='traffic'){
+        trafficWindow=windowValue;
+        if(dashboard)renderTrafficConversion(dashboard);
+      }
+    });
+  });
+});
+
+let resizeTimer=null;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(dashboard){renderPerformanceCharts(dashboard);renderTrafficConversion(dashboard)}},120)});
+loadDashboard().catch(err=>{console.error(err);document.body.insertAdjacentHTML('afterbegin',`<div style="margin:12px;padding:10px;border:1px solid #F09E55;background:#fff8f3;border-radius:4px;font:600 10px Montserrat,sans-serif;color:#D9541F">Dashboard data could not be loaded: ${escapeHtml(err.message)}</div>`)});
+</script>
+</body>
+</html>
