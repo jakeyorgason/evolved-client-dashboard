@@ -43,8 +43,95 @@ function csvCell(v){const s=String(v??'');return `"${s.replaceAll('"','""')}"`}
 function prettyName(v=''){let s=String(v).replace('Anchor Strap Co | ','').replaceAll(' | ',' · ');if(s.length>72)s=s.slice(0,69).trim()+'…';return s}
 function escapeHtml(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function drawSalesChart(d){const p=[...(d.monthly_trend||[])].map(x=>({label:x.month.slice(0,3),value:x.total_sales}));p.push({label:'Aug*',value:d.kpis?.projected_sales||0});drawLine('sales-chart',p,{value:v=>fmtMoney(v,true),stroke:'#F47322',fill:'#FDF1E9'})}
-function drawTacosChart(d){const p=[...(d.monthly_trend||[])].map(x=>({label:x.month.slice(0,3),value:x.tacos}));p.push({label:'Aug',value:d.kpis?.tacos||0});drawLine('tacos-chart',p,{value:v=>fmtPct(v,0),stroke:'#415A68',fill:'#EEF1F3',target:d.goals?.tacos?.target})}
-function drawLine(id,points,o){const el=$(id),w=720,h=220,p={l:48,r:18,t:20,b:34};if(!points.length){el.innerHTML='';return}const vals=points.map(x=>Number(x.value||0));let min=Math.min(...vals,o.target??Infinity),max=Math.max(...vals,o.target??-Infinity);if(min===max){min*=.8;max*=1.2}const sp=max-min;min=Math.max(0,min-sp*.18);max=max+sp*.18;const X=i=>p.l+i*(w-p.l-p.r)/Math.max(1,points.length-1),Y=v=>p.t+(max-v)*(h-p.t-p.b)/(max-min),c=points.map((x,i)=>[X(i),Y(x.value)]),line=c.map((a,i)=>(i?'L':'M')+a[0].toFixed(1)+','+a[1].toFixed(1)).join(' '),area=`M${c[0][0]},${h-p.b} `+c.map(a=>`L${a[0]},${a[1]}`).join(' ')+` L${c.at(-1)[0]},${h-p.b} Z`;const grid=[0,.5,1].map(t=>{const v=max-(max-min)*t,y=p.t+(h-p.t-p.b)*t;return `<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="#edf0f1"/><text x="4" y="${y+4}" class="axis-label">${o.value(v)}</text>`}).join(''),labels=points.map((x,i)=>`<text x="${X(i)}" y="${h-10}" text-anchor="middle" class="axis-label">${x.label}</text>`).join(''),dots=c.map((a,i)=>`<circle cx="${a[0]}" cy="${a[1]}" r="3.4" fill="#fff" stroke="${o.stroke}" stroke-width="2"/><text x="${a[0]}" y="${a[1]-10}" text-anchor="middle" class="chart-value">${o.value(points[i].value)}</text>`).join('');let target='';if(o.target!=null){const y=Y(o.target);target=`<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="#FDBA31" stroke-width="1.2" stroke-dasharray="5 5"/>`}el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">${grid}${target}<path d="${area}" fill="${o.fill}" opacity=".8"/><path d="${line}" fill="none" stroke="${o.stroke}" stroke-width="2.5" vector-effect="non-scaling-stroke"/>${dots}${labels}</svg>`}
+function drawTacosChart(d){
+  const p=[...(d.monthly_trend||[])].map(x=>({label:x.month.slice(0,3),value:Number(x.tacos||0)}));
+  p.push({label:'Aug',value:Number(d.kpis?.tacos||0)});
+  drawTacosReadable('tacos-chart',p,Number(d.goals?.tacos?.target||0));
+}
+function drawTacosReadable(id,points,target){
+  const el=$(id);
+  if(!points.length){el.innerHTML='';return}
+  const w=Math.max(420,Math.round(el.getBoundingClientRect().width||520));
+  const h=Math.max(250,Math.round(el.getBoundingClientRect().height||280));
+  const pad={l:54,r:30,t:34,b:38};
+
+  const vals=points.map(x=>Number(x.value||0));
+  const rawMax=Math.max(...vals,target||0);
+  const step=.20;
+  const yMax=Math.max(.60,Math.ceil(rawMax/step)*step);
+  const yMin=0;
+
+  const X=i=>pad.l+i*(w-pad.l-pad.r)/Math.max(1,points.length-1);
+  const Y=v=>pad.t+(yMax-v)*(h-pad.t-pad.b)/(yMax-yMin);
+
+  const ticks=[];
+  for(let v=0;v<=yMax+.0001;v+=step)ticks.push(Number(v.toFixed(4)));
+  const grid=ticks.map(v=>{
+    const y=Y(v);
+    return `<line x1="${pad.l}" y1="${y}" x2="${w-pad.r}" y2="${y}" stroke="#E6EAEC" stroke-width="1"/>
+      <text x="${pad.l-10}" y="${y+4}" text-anchor="end" class="tacos-axis-label">${Math.round(v*100)}%</text>`;
+  }).join('');
+
+  const coords=points.map((p,i)=>[X(i),Y(p.value)]);
+  const line=coords.map((c,i)=>(i?'L':'M')+c[0].toFixed(1)+','+c[1].toFixed(1)).join(' ');
+  const area=`M${coords[0][0]},${h-pad.b} `+coords.map(c=>`L${c[0]},${c[1]}`).join(' ')+` L${coords.at(-1)[0]},${h-pad.b} Z`;
+
+  const labels=points.map((p,i)=>
+    `<text x="${X(i)}" y="${h-12}" text-anchor="middle" class="tacos-axis-label">${p.label}</text>`
+  ).join('');
+
+  const dots=coords.map((c,i)=>{
+    const labelY=Math.max(17,c[1]-13);
+    return `<circle cx="${c[0]}" cy="${c[1]}" r="4.5" fill="#fff" stroke="#415A68" stroke-width="2.5"/>
+      <text x="${c[0]}" y="${labelY}" text-anchor="middle" class="tacos-data-label">${Math.round(points[i].value*100)}%</text>`;
+  }).join('');
+
+  let targetLine='';
+  if(target>0){
+    const ty=Y(target);
+    targetLine=`<line x1="${pad.l}" y1="${ty}" x2="${w-pad.r}" y2="${ty}" stroke="#F47322" stroke-width="1.5" stroke-dasharray="6 5"/>
+      <text x="${w-pad.r}" y="${ty-8}" text-anchor="end" class="tacos-target-label">${Math.round(target*100)}% target</text>`;
+  }
+
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">${grid}${targetLine}<path d="${area}" fill="#EEF1F3" opacity=".75"/><path d="${line}" fill="none" stroke="#415A68" stroke-width="3" vector-effect="non-scaling-stroke"/>${dots}${labels}</svg>`;
+}
+function drawLine(id,points,o){
+  const el=$(id);
+  if(!points.length){el.innerHTML='';return}
+  const w=Math.max(520,Math.round(el.getBoundingClientRect().width||720));
+  const h=Math.max(250,Math.round(el.getBoundingClientRect().height||280));
+  const p={l:54,r:24,t:28,b:38};
+
+  const vals=points.map(x=>Number(x.value||0));
+  let min=Math.min(...vals,o.target??Infinity),max=Math.max(...vals,o.target??-Infinity);
+  if(min===max){min*=.8;max*=1.2}
+  const sp=max-min;
+  min=Math.max(0,min-sp*.18);
+  max=max+sp*.18;
+
+  const X=i=>p.l+i*(w-p.l-p.r)/Math.max(1,points.length-1);
+  const Y=v=>p.t+(max-v)*(h-p.t-p.b)/(max-min);
+  const c=points.map((x,i)=>[X(i),Y(x.value)]);
+  const line=c.map((a,i)=>(i?'L':'M')+a[0].toFixed(1)+','+a[1].toFixed(1)).join(' ');
+  const area=`M${c[0][0]},${h-p.b} `+c.map(a=>`L${a[0]},${a[1]}`).join(' ')+` L${c.at(-1)[0]},${h-p.b} Z`;
+
+  const grid=[0,.5,1].map(t=>{
+    const v=max-(max-min)*t,y=p.t+(h-p.t-p.b)*t;
+    return `<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="#edf0f1"/>
+      <text x="${p.l-10}" y="${y+4}" text-anchor="end" class="axis-label">${o.value(v)}</text>`;
+  }).join('');
+
+  const labels=points.map((x,i)=>`<text x="${X(i)}" y="${h-12}" text-anchor="middle" class="axis-label">${x.label}</text>`).join('');
+  const dots=c.map((a,i)=>`<circle cx="${a[0]}" cy="${a[1]}" r="4" fill="#fff" stroke="${o.stroke}" stroke-width="2.5"/>
+    <text x="${a[0]}" y="${Math.max(16,a[1]-13)}" text-anchor="middle" class="chart-value">${o.value(points[i].value)}</text>`).join('');
+
+  let target='';
+  if(o.target!=null){
+    const y=Y(o.target);
+    target=`<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="#FDBA31" stroke-width="1.4" stroke-dasharray="5 5"/>`;
+  }
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">${grid}${target}<path d="${area}" fill="${o.fill}" opacity=".8"/><path d="${line}" fill="none" stroke="${o.stroke}" stroke-width="2.7" vector-effect="non-scaling-stroke"/>${dots}${labels}</svg>`;
+}
 $('download-inventory').addEventListener('click',downloadInventoryCsv);
 
 const dialog=$('request-dialog');
@@ -357,6 +444,15 @@ requestForm.addEventListener('submit',async e=>{
     localStorage.setItem('evolved_prototype_requests',JSON.stringify(existing));
     status.textContent='Prototype saved locally — ClickUp turns on next.';
   }
+});
+
+
+let dashboardResizeTimer=null;
+window.addEventListener('resize',()=>{
+  clearTimeout(dashboardResizeTimer);
+  dashboardResizeTimer=setTimeout(()=>{
+    if(dashboard){drawSalesChart(dashboard);drawTacosChart(dashboard)}
+  },120);
 });
 
 loadDashboard().catch(err=>{console.error(err);document.body.insertAdjacentHTML('afterbegin',`<div style="margin:12px;padding:10px;border:1px solid #F09E55;background:#fff8f3;border-radius:4px;font:600 10px Montserrat,sans-serif;color:#D9541F">Dashboard data could not be loaded: ${escapeHtml(err.message)}</div>`)});
