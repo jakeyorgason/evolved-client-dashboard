@@ -18,12 +18,75 @@ function render(d){
   $('roas-target').textContent=d.goals?.roas?.target?`Target ${fmtRoas(d.goals.roas.target)}`:'';
   $('tacos-target').textContent=d.goals?.tacos?.target?`Target ${fmtPct(d.goals.tacos.target)}`:'';
   $('tacos-chart-target').textContent=d.goals?.tacos?.target?`Reference target ${fmtPct(d.goals.tacos.target)}`:'';
-  renderComparisons(d);renderSignals(d);renderProducts(d);renderInventory(d);drawSalesChart(d);drawTacosChart(d);$('request-client-slug').value=d.client?.slug||'anchorstrap'
+  renderComparisons(d);renderSignals(d);renderTrafficConversion(d);renderProducts(d);renderInventory(d);drawSalesChart(d);drawTacosChart(d);drawTrafficChart(d);drawConversionChart(d);$('request-client-slug').value=d.client?.slug||'anchorstrap'
 }
 function neutralSummary(d){const k=d.kpis||{};return `${fmtMoney(k.total_sales)} in month-to-date sales across ${fmtNum(k.sessions)} sessions, with ${fmtMoney(k.ad_sales)} in Amazon-attributed ad sales.`}
 function renderComparisons(d){const k=d.kpis||{},g=d.goals||{},inv=d.inventory||{},target=Number(g.monthly_sales?.target||0),proj=Number(k.projected_sales||0);const rows=[['Projected sales',fmtMoney(proj),target?`${fmtPct(proj/target,0)} of target`:'Current projection'],['Sessions',fmtNum(k.sessions),g.monthly_sessions?.target?`Target ${fmtNum(g.monthly_sessions.target)}`:'Month to date'],['Conversion',fmtPct(k.conversion_rate),g.conversion_rate?.target?`Target ${fmtPct(g.conversion_rate.target)}`:'Current month'],['Inventory',`${fmtNum(inv.risk_products)} flagged`,`${fmtNum(inv.out_of_stock)} out of stock`]];$('comparison-grid').innerHTML=rows.map(([l,v,n])=>`<div class="comparison-item"><span>${l}</span><strong>${v}</strong><small>${n}</small></div>`).join('')}
-function renderSignals(d){const k=d.kpis||{},inv=d.inventory||{};signal('sales-signals',[['Month-to-date sales',fmtMoney(k.total_sales)],['Projected sales',fmtMoney(k.projected_sales)],['Sessions',fmtNum(k.sessions)],['Conversion rate',fmtPct(k.conversion_rate)]]);signal('ad-signals',[['Attributed sales',fmtMoney(k.ad_sales)],['Ad spend',fmtMoney(k.ad_spend)],['ROAS',fmtRoas(k.roas)],['TACOS',fmtPct(k.tacos)]]);signal('ops-signals',[['Inventory flags',fmtNum(inv.risk_products)],['Out of stock',fmtNum(inv.out_of_stock)],['Order now',fmtNum(inv.order_now)],['Data age',`${fmtNum(d.health?.data_age_days||0)} days`]])}
+function renderSignals(d){const k=d.kpis||{},inv=d.inventory||{};signal('sales-signals',[['Month-to-date sales',fmtMoney(k.total_sales)],['Projected sales',fmtMoney(k.projected_sales)],['Orders',fmtNum(k.orders)],['Units',fmtNum(k.units)]]);signal('ad-signals',[['Attributed sales',fmtMoney(k.ad_sales)],['Ad spend',fmtMoney(k.ad_spend)],['ROAS',fmtRoas(k.roas)],['TACOS',fmtPct(k.tacos)]]);signal('ops-signals',[['Inventory flags',fmtNum(inv.risk_products)],['Out of stock',fmtNum(inv.out_of_stock)],['Order now',fmtNum(inv.order_now)],['Data age',`${fmtNum(d.health?.data_age_days||0)} days`]])}
 function signal(id,rows){$(id).innerHTML=rows.map(([l,v])=>`<div class="signal-row"><span>${l}</span><strong>${v}</strong></div>`).join('')}
+function driverData(d){
+  const tc=d.traffic_conversion||{};
+  const weekly=Array.isArray(tc.weekly)?tc.weekly:[];
+  const last=weekly.at(-1)||{};
+  const prev=weekly.at(-2)||{};
+  const k=d.kpis||{},g=d.goals||{};
+  return {
+    traffic:{
+      sessions:tc.traffic?.sessions??k.sessions??0,
+      projected_sessions:tc.traffic?.projected_sessions??k.projected_sessions??0,
+      target_sessions:tc.traffic?.target_sessions??g.monthly_sessions?.target??0,
+      latest_week_sessions:tc.traffic?.latest_week_sessions??last.sessions??0,
+      wow_change:tc.traffic?.wow_change??((prev.sessions&&last.sessions)?last.sessions/prev.sessions-1:null)
+    },
+    conversion:{
+      rate:tc.conversion?.rate??k.conversion_rate??0,
+      target_rate:tc.conversion?.target_rate??g.conversion_rate?.target??0,
+      orders:tc.conversion?.orders??k.orders??0,
+      units:tc.conversion?.units??k.units??0,
+      latest_week_rate:tc.conversion?.latest_week_rate??last.conversion_rate??0,
+      wow_pp_change:tc.conversion?.wow_pp_change??((last.conversion_rate!=null&&prev.conversion_rate!=null)?last.conversion_rate-prev.conversion_rate:null)
+    },weekly
+  }
+}
+function signedPct(v){if(v===null||v===undefined||!Number.isFinite(Number(v)))return '—';const n=Number(v);return `${n>0?'+':''}${(n*100).toFixed(1)}% WoW`}
+function signedPp(v){if(v===null||v===undefined||!Number.isFinite(Number(v)))return '—';const n=Number(v)*100;return `${n>0?'+':''}${n.toFixed(1)} pp WoW`}
+function renderTrafficConversion(d){
+  const tc=driverData(d),t=tc.traffic,c=tc.conversion;
+  $('traffic-sessions').textContent=fmtNum(t.sessions);
+  $('traffic-projected').textContent=fmtNum(t.projected_sessions);
+  $('traffic-target').textContent=t.target_sessions?fmtNum(t.target_sessions):'—';
+  $('traffic-latest').textContent=t.latest_week_sessions?fmtNum(t.latest_week_sessions):'—';
+  $('traffic-wow').textContent=signedPct(t.wow_change);
+  $('conversion-rate').textContent=fmtPct(c.rate);
+  $('conversion-target').textContent=c.target_rate?fmtPct(c.target_rate):'—';
+  $('conversion-orders').textContent=fmtNum(c.orders);
+  $('conversion-units').textContent=fmtNum(c.units);
+  $('conversion-latest').textContent=c.latest_week_rate?fmtPct(c.latest_week_rate):'—';
+  $('conversion-wow').textContent=signedPp(c.wow_pp_change);
+}
+function drawTrafficChart(d){
+  const tc=driverData(d),points=tc.weekly.map(x=>({label:x.label||x.week_start,value:Number(x.sessions||0)}));
+  drawDriverTrend('traffic-chart',points,{kind:'count',stroke:'#F47322',fill:'#FDF1E9'});
+}
+function drawConversionChart(d){
+  const tc=driverData(d),points=tc.weekly.map(x=>({label:x.label||x.week_start,value:Number(x.conversion_rate||0)}));
+  drawDriverTrend('conversion-chart',points,{kind:'percent',stroke:'#415A68',fill:'#EEF1F3',target:Number(tc.conversion.target_rate||0)});
+}
+function drawDriverTrend(id,points,o){
+  const el=$(id);if(!el||!points.length){if(el)el.innerHTML='<div class="request-empty">Weekly history will appear as data builds.</div>';return}
+  const w=Math.max(480,Math.round(el.getBoundingClientRect().width||600)),h=Math.max(220,Math.round(el.getBoundingClientRect().height||235)),p={l:55,r:30,t:30,b:38};
+  const vals=points.map(x=>Number(x.value||0));let min=0,max=Math.max(...vals,o.target||0);
+  if(o.kind==='percent')max=Math.max(.06,Math.ceil(max/.02)*.02);else max=Math.ceil(max/2000)*2000||10000;
+  const X=i=>p.l+i*(w-p.l-p.r)/Math.max(1,points.length-1),Y=v=>p.t+(max-v)*(h-p.t-p.b)/(max-min);
+  const coords=points.map((x,i)=>[X(i),Y(x.value)]),line=coords.map((a,i)=>(i?'L':'M')+a[0].toFixed(1)+','+a[1].toFixed(1)).join(' '),area=`M${coords[0][0]},${h-p.b} `+coords.map(a=>`L${a[0]},${a[1]}`).join(' ')+` L${coords.at(-1)[0]},${h-p.b} Z`;
+  const tickVals=o.kind==='percent'?[0,max/2,max]:[0,max/2,max];
+  const format=v=>o.kind==='percent'?`${Math.round(v*100)}%`:fmtNum(v);
+  const grid=tickVals.map(v=>{const y=Y(v);return `<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="#E6EAEC"/><text x="${p.l-10}" y="${y+4}" text-anchor="end" class="driver-axis-label">${format(v)}</text>`}).join('');
+  const labels=points.map((x,i)=>`<text x="${X(i)}" y="${h-12}" text-anchor="middle" class="driver-axis-label">${x.label}</text>`).join('');
+  const dots=coords.map((a,i)=>`<circle cx="${a[0]}" cy="${a[1]}" r="4" fill="#fff" stroke="${o.stroke}" stroke-width="2.4"/><text x="${a[0]}" y="${Math.max(15,a[1]-12)}" text-anchor="middle" class="driver-value-label">${format(points[i].value)}</text>`).join('');
+  let target='';if(o.target){const y=Y(o.target);target=`<line x1="${p.l}" y1="${y}" x2="${w-p.r}" y2="${y}" stroke="#F47322" stroke-width="1.3" stroke-dasharray="6 5"/><text x="${w-p.r}" y="${y-7}" text-anchor="end" class="driver-target-label">${format(o.target)} target</text>`}
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">${grid}${target}<path d="${area}" fill="${o.fill}" opacity=".78"/><path d="${line}" fill="none" stroke="${o.stroke}" stroke-width="2.7"/>${dots}${labels}</svg>`;
+}
 function renderProducts(d){$('product-table').innerHTML=(d.top_products||[]).map(p=>{const t=Number(p.sales_change||0),sign=t>0?'+':'';return `<tr><td><span class="product-name">${escapeHtml(prettyName(p.product))}</span><span class="asin">${escapeHtml(p.asin||'')}</span></td><td>${fmtMoney(p.sales)}</td><td class="change">${sign}${(t*100).toFixed(1)}%</td><td>${fmtPct(p.conversion_rate)}</td></tr>`}).join('')}
 function renderInventory(d){
   const inv=d.inventory||{},items=getReplenishmentItems(inv),units=items.reduce((s,x)=>s+Number(x.recommended_units||0),0);
@@ -451,7 +514,7 @@ let dashboardResizeTimer=null;
 window.addEventListener('resize',()=>{
   clearTimeout(dashboardResizeTimer);
   dashboardResizeTimer=setTimeout(()=>{
-    if(dashboard){drawSalesChart(dashboard);drawTacosChart(dashboard)}
+    if(dashboard){drawSalesChart(dashboard);drawTacosChart(dashboard);drawTrafficChart(dashboard);drawConversionChart(dashboard)}
   },120);
 });
 
